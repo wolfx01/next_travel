@@ -5,10 +5,20 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const page = parseInt(searchParams.get('page') || '1', 10);
   const limit = parseInt(searchParams.get('limit') || '12', 10);
+  const search = searchParams.get('search') || '';
 
-  // Sort alphabetically first (consistent order is crucial for pagination)
-  // Casting to any because JSON import might be inferred loosely
-  const sortedCountries = [...countriesData].sort((a: any, b: any) => 
+  let filteredCountries = [...countriesData];
+  
+  // 1. Filter by Search Term
+  if (search) {
+      const lowerSearch = search.toLowerCase();
+      filteredCountries = filteredCountries.filter((country: any) => 
+          country.name.common.toLowerCase().includes(lowerSearch)
+      );
+  }
+
+  // 2. Sort alphabetically
+  const sortedCountries = filteredCountries.sort((a: any, b: any) => 
     a.name.common.localeCompare(b.name.common)
   );
 
@@ -16,9 +26,7 @@ export async function GET(request: NextRequest) {
   const endIndex = startIndex + limit;
   const paginatedCountries = sortedCountries.slice(startIndex, endIndex);
 
-  // Assign random ratings if missing (consistent seed would be better but this is simple migration)
-  // Note: In a real app better store this in DB. For static JSON, we re-calculate per request 
-  // which might cause rating jitter on refresh but OK for now.
+  // Assign random ratings if missing
   paginatedCountries.forEach((country: any) => {
       if (!country.rating) {
           country.rating = (Math.random() * 2 + 3).toFixed(1);
@@ -27,7 +35,7 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({
     countries: paginatedCountries,
-    total: countriesData.length,
-    hasMore: endIndex < countriesData.length
+    total: sortedCountries.length,
+    hasMore: endIndex < sortedCountries.length
   });
 }

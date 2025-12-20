@@ -29,7 +29,10 @@ export async function GET() {
       userName: user.userName,
       email: user.email,
       avatarUrl: user.avatarUrl,
-      coverUrl: user.coverUrl
+      coverUrl: user.coverUrl,
+      bio: user.bio,
+      savedPlacesCount: user.savedPlaces?.length || 0,
+      savedPlaces: user.savedPlaces || []
     });
   } catch (err) {
     console.error('Check-Login API Error:', err);

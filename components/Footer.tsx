@@ -1,7 +1,14 @@
+"use client";
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  if (pathname === '/profile') return null;
+
   return (
     <footer className="footer">
       <div className="footer-container">

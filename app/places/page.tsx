@@ -20,6 +20,9 @@ function PlacesContent() {
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('population');
   
+  const [userSavedPlaces, setUserSavedPlaces] = useState<string[]>([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const searchParams = useSearchParams();
   const countryFilter = searchParams.get('country') || '';
 
@@ -35,6 +38,19 @@ function PlacesContent() {
     });
     if (node) observer.current.observe(node);
   }, [loading, hasMore]);
+
+  useEffect(() => {
+    // Check login and get saved places
+    fetch('/api/auth/check-login')
+        .then(res => res.json())
+        .then(data => {
+            if (data.loggedIn) {
+                setIsLoggedIn(true);
+                setUserSavedPlaces(data.savedPlaces || []);
+            }
+        })
+        .catch(err => console.error(err));
+  }, []);
 
   useEffect(() => {
     setPlaces([]);
@@ -73,6 +89,39 @@ function PlacesContent() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleToggleSave = async (placeId: string) => {
+      if (!isLoggedIn) {
+          alert("Please login to save places");
+          return;
+      }
+
+      // Optimistic update
+      const isSaved = userSavedPlaces.includes(placeId);
+      let newSavedPlaces;
+      if (isSaved) {
+          newSavedPlaces = userSavedPlaces.filter(id => id !== placeId);
+      } else {
+          newSavedPlaces = [...userSavedPlaces, placeId];
+      }
+      setUserSavedPlaces(newSavedPlaces);
+
+      try {
+          const res = await fetch('/api/user/toggle-place', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ placeId })
+          });
+          if (!res.ok) {
+              // Revert if failed
+              setUserSavedPlaces(userSavedPlaces); 
+              alert("Failed to save place");
+          }
+      } catch (err) {
+          console.error(err);
+          setUserSavedPlaces(userSavedPlaces);
+      }
   };
 
   return (
@@ -122,10 +171,20 @@ function PlacesContent() {
         margin: '0 auto'
       }}>
         {places.map((place, index) => {
+          const isSaved = userSavedPlaces.includes(place.id.toString());
+          const key = place.id;
+          const content = (
+            <PlaceCard 
+                place={place} 
+                isSaved={isSaved} 
+                onToggleSave={() => handleToggleSave(place.id.toString())} 
+            />
+          );
+
           if (places.length === index + 1) {
-            return <div ref={lastPlaceElementRef} key={place.id}><PlaceCard place={place} /></div>;
+            return <div ref={lastPlaceElementRef} key={key}>{content}</div>;
           } else {
-            return <div key={place.id}><PlaceCard place={place} /></div>;
+            return <div key={key}>{content}</div>;
           }
         })}
       </div>
@@ -137,7 +196,7 @@ function PlacesContent() {
   );
 }
 
-function PlaceCard({ place }: { place: any }) {
+function PlaceCard({ place, isSaved, onToggleSave }: { place: any, isSaved: boolean, onToggleSave: () => void }) {
     const [image, setImage] = useState(place.image || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400');
     const [opacity, setOpacity] = useState(1);
 
@@ -155,7 +214,35 @@ function PlaceCard({ place }: { place: any }) {
     }, [place.name, place.country]);
 
     return (
-        <div className="place-card fade-in">
+        <div className="place-card fade-in" style={{ position: 'relative' }}>
+            <button 
+                onClick={(e) => {
+                    e.preventDefault();
+                    onToggleSave();
+                }}
+                className="save-btn"
+                style={{
+                    position: 'absolute',
+                    top: '10px',
+                    right: '10px',
+                    background: 'rgba(255,255,255,0.8)',
+                    border: 'none',
+                    borderRadius: '50%',
+                    width: '35px',
+                    height: '35px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '1.2rem',
+                    color: isSaved ? '#e74c3c' : '#555',
+                    transition: 'all 0.3s',
+                    zIndex: 2
+                }}
+            >
+                <i className={`${isSaved ? 'fas' : 'far'} fa-heart`}></i>
+            </button>
+
             <img 
                 src={image} 
                 alt={place.name} 
@@ -165,7 +252,7 @@ function PlaceCard({ place }: { place: any }) {
             />
             <div className="place-info">
                 <h3 className="place-name">{place.name}</h3>
-                <div className="place-location">{place.country}</div> {/* Country code mainly, could be improved */}
+                <div className="place-location">{place.country}</div> 
                 <div className="place-rating">
                     <span className="stars">★</span>
                     <span className="rating-text">({place.rating}/5)</span>

@@ -13,7 +13,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { avatarUrl, coverUrl } = await request.json();
+    const { avatarUrl, coverUrl, bio } = await request.json();
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string };
 
     await connectToDatabase();
@@ -21,6 +21,7 @@ export async function POST(request: Request) {
     const updateData: any = {};
     if (avatarUrl) updateData.avatarUrl = avatarUrl;
     if (coverUrl) updateData.coverUrl = coverUrl;
+    if (bio !== undefined) updateData.bio = bio;
 
     const user = await User.findByIdAndUpdate(
         decoded.id, 

@@ -5,9 +5,10 @@ import Link from 'next/link';
 
 export default function Countries() {
   const [countries, setCountries] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true); // Initial load true
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
   
   const observer = useRef<IntersectionObserver | null>(null);
   
@@ -22,22 +23,38 @@ export default function Countries() {
     if (node) observer.current.observe(node);
   }, [loading, hasMore]);
 
+  // Debounce search to avoid excessive API calls
   useEffect(() => {
-    fetchCountries();
+    const delayDebounceFn = setTimeout(() => {
+      setPage(1); // Reset to page 1 for new search
+      setCountries([]); // Clear existing list
+      fetchCountries(1, searchTerm);
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm]);
+
+  // Handle pagination (only if scanning more pages of same search)
+  useEffect(() => {
+    if (page > 1) {
+        fetchCountries(page, searchTerm);
+    }
   }, [page]);
 
-  const fetchCountries = async () => {
+  const fetchCountries = async (pageNum: number, search: string) => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/countries?page=${page}&limit=6`);
+      const response = await fetch(`/api/countries?page=${pageNum}&limit=12&search=${encodeURIComponent(search)}`);
       if (!response.ok) throw new Error('Failed to fetch countries');
       
       let data = await response.json();
       
       setCountries(prev => {
-        // Avoid duplicates if page 1 is re-fetched or StrictMode double-invokes
-        if (page === 1) return data.countries;
-        return [...prev, ...data.countries];
+        if (pageNum === 1) return data.countries;
+        // Basic deduplication check based on name
+        const existingNames = new Set(prev.map(c => c.name.common));
+        const newCountries = data.countries.filter((c: any) => !existingNames.has(c.name.common));
+        return [...prev, ...newCountries];
       });
       setHasMore(data.hasMore);
       setLoading(false);
@@ -54,6 +71,25 @@ export default function Countries() {
         <div className="countries-hero-content">
             <h1>Explore Countries</h1>
             <p>Discover exciting destinations and rich cultures across the globe.</p>
+            
+            <div className="search-container" style={{ marginTop: '20px' }}>
+                <input 
+                    type="text" 
+                    placeholder="Search countries..." 
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{
+                        padding: '12px 20px',
+                        fontSize: '1rem',
+                        borderRadius: '30px',
+                        border: 'none',
+                        width: '100%',
+                        maxWidth: '500px',
+                        boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+                        outline: 'none'
+                    }}
+                />
+            </div>
         </div>
 
       </div>
