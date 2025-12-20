@@ -1,0 +1,179 @@
+/* Profile Page Styles */
+
+.profile-container {
+    padding-top: 0; /* Navbar overlays the cover photo */
+    min-height: 100vh;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cover-photo-container {
+    width: 100%;
+    height: 300px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    /* Optional: Add an overlay if needed, or keep it clean */
+}
+
+.edit-cover-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 40px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s;
+}
+
+.edit-cover-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.profile-content-wrapper {
+    width: 100%;
+    max-width: 1000px;
+    padding: 0 40px;
+    position: relative;
+    margin-top: -75px; /* Overlap the cover photo */
+}
+
+.profile-header-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.avatar-wrapper {
+    position: relative;
+}
+
+.profile-avatar-large {
+    width: 160px;
+    height: 160px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 5px solid white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    overflow: hidden; /* crop the image to circle */
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.edit-avatar-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: #3498db;
+    color: white;
+    border: 3px solid white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+}
+
+.edit-avatar-btn:hover {
+    transform: scale(1.1);
+    background: #2980b9;
+}
+
+.profile-info {
+    margin-top: 10px;
+}
+
+.profile-info h1 {
+    margin: 0;
+    color: #000;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.profile-info p.email {
+    margin: 5px 0 0;
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.profile-info p.bio {
+    margin: 15px 0 0;
+    color: #333;
+    font-size: 1.2rem;
+    max-width: 600px;
+    line-height: 1.5;
+}
+
+.profile-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 50px;
+    width: 100%;
+}
+
+.stat-card {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid #eee;
+}
+
+.stat-card h3 {
+    margin: 0 0 10px;
+    color: #555;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-card .count {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .cover-photo-container {
+        height: 180px;
+    }
+    
+    .profile-content-wrapper {
+        margin-top: -50px;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .profile-header-section {
+        align-items: center;
+    }
+    
+    .profile-avatar-large {
+        width: 120px;
+        height: 120px;
+        font-size: 3rem;
+    }
+}

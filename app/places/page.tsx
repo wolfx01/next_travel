@@ -76,10 +76,14 @@ function PlacesContent() {
   };
 
   return (
-    <main style={{ marginTop: '80px', padding: '20px' }}>
-      <h1 className="page-title" style={{ textAlign: 'center', marginBottom: '20px', color: '#2c3e50' }}>
-        {countryFilter ? `Places in ${countryFilter}` : 'Explore Places'}
-      </h1>
+    <main style={{ marginTop: '0', padding: '0' }}>
+      <div className="places-hero">
+        <div className="hero-overlay"></div>
+        <div className="places-hero-content">
+            <h1>{countryFilter ? `Places in ${countryFilter}` : 'Explore Places'}</h1>
+            <p>Find the best tourist attractions and hidden gems.</p>
+        </div>
+      </div>
 
       <div className="filters-container" style={{
         display: 'flex',

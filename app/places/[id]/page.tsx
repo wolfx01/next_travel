@@ -118,7 +118,7 @@ export default function PlaceDetails() {
   if (loading) return <div style={{ marginTop: '100px', textAlign: 'center', fontSize: '1.5rem', color: '#666' }}>Loading details...</div>;
   if (!place) return <div style={{ marginTop: '100px', textAlign: 'center', fontSize: '1.5rem', color: '#666' }}>Place not found.</div>;
 
-  return (
+    return (
     <main className="place-details-container">
         <section className="hero-place">
             <img src={mainImage} alt={place.name} className="hero-image" />
@@ -147,13 +147,8 @@ export default function PlaceDetails() {
 
         <section className="booking-section">
             <h2>Book Your Trip</h2>
-            <div style={{ padding: '20px', background: '#f8f9fa', borderRadius: '10px', textAlign: 'center' }}>
-                 <p>Find the best flights to {place.name}</p>
-                 <a href={`https://www.aviasales.com/search?origin=MAD&destination=${place.name}`} target="_blank" rel="noopener noreferrer" style={{
-                     display: 'inline-block', padding: '10px 20px', background: '#32a8dd', color: 'white', textDecoration: 'none', borderRadius: '5px', marginTop: '10px'
-                 }}>
-                    Search Flights
-                 </a>
+            <div id="aviasales_container" style={{ minHeight: '100px', display: 'flex', justifyContent: 'center' }}>
+                 <AviasalesSearchWidget destination={place.name} />
             </div>
         </section>
 
@@ -251,4 +246,99 @@ function DynamicMainImage({ city, country }: { city: string, country: string }) 
             .catch(e => console.error(e));
     }, [city, country]);
     return null;
+}
+
+function AviasalesSearchWidget({ destination }: { destination: string }) {
+    const [origin, setOrigin] = useState('LON');
+    const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        // Construct deep link
+        const url = `https://www.aviasales.com/search?origin=${origin}&destination=${destination}&depart_date=${date}`;
+        window.open(url, '_blank');
+    };
+
+    return (
+        <div style={{
+            background: 'white',
+            padding: '25px',
+            borderRadius: '12px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+            width: '100%',
+            maxWidth: '800px',
+            fontFamily: 'sans-serif'
+        }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ background: '#32a8dd', borderRadius: '50%', width: '30px', height: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                         <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+                    </div>
+                    <span style={{ fontWeight: 700, fontSize: '1.2rem', color: '#32a8dd' }}>aviasales</span>
+                </div>
+                <span style={{ fontSize: '0.9rem', color: '#666' }}>Cheap flights and airline tickets</span>
+            </div>
+
+            <form onSubmit={handleSearch} style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                <div style={{ flex: '1 1 200px' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', color: '#999', marginBottom: '4px' }}>Origin</label>
+                    <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #ddd', borderRadius: '6px', padding: '10px', background: '#fff' }}>
+                        <input 
+                            type="text" 
+                            value={origin} 
+                            onChange={(e) => setOrigin(e.target.value.toUpperCase())}
+                            style={{ border: 'none', outline: 'none', width: '100%', fontSize: '1rem', fontWeight: 500 }}
+                        />
+                        <span style={{ color: '#aaa', fontSize: '0.8rem' }}>IATA</span>
+                    </div>
+                </div>
+
+                <div style={{ flex: '1 1 200px' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', color: '#999', marginBottom: '4px' }}>Destination</label>
+                    <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #ddd', borderRadius: '6px', padding: '10px', background: '#f5f5f5' }}>
+                        <input 
+                            type="text" 
+                            value={destination} 
+                            readOnly
+                            style={{ border: 'none', outline: 'none', width: '100%', fontSize: '1rem', fontWeight: 500, background: 'transparent', color: '#333' }}
+                        />
+                    </div>
+                </div>
+
+                <div style={{ flex: '1 1 150px' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', color: '#999', marginBottom: '4px' }}>Depart Date</label>
+                    <div style={{ border: '1px solid #ddd', borderRadius: '6px', padding: '10px', background: '#fff' }}>
+                         <input 
+                            type="date" 
+                            value={date}
+                            onChange={(e) => setDate(e.target.value)}
+                            style={{ border: 'none', outline: 'none', width: '100%', fontSize: '1rem', fontFamily: 'inherit' }}
+                        />
+                    </div>
+                </div>
+
+                <div style={{ flex: '0 0 auto', display: 'flex', alignItems: 'flex-end' }}>
+                    <button type="submit" style={{
+                        background: '#0fb8eb',
+                        color: 'white',
+                        border: 'none',
+                        padding: '12px 30px',
+                        borderRadius: '6px',
+                        fontSize: '1rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        height: '46px',
+                        boxShadow: '0 2px 8px rgba(15, 184, 235, 0.3)'
+                    }}>
+                        Search
+                    </button>
+                </div>
+            </form>
+             <div style={{ marginTop: '10px', display: 'flex', justifyContent: 'flex-end' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.85rem', color: '#555', cursor: 'pointer' }}>
+                    <input type="checkbox" defaultChecked style={{ accentColor: '#0fb8eb' }} /> Show hotels
+                </label>
+            </div>
+        </div>
+    );
 }

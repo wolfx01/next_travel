@@ -71,6 +71,11 @@ header{
     font-weight: bold;
 }
 
+/* Hide Icons on Desktop by default */
+#button .a svg {
+    display: none;
+}
+
 .a.active {
     color: #1301b0;
 }
@@ -150,14 +155,23 @@ header{
     color: white !important; /* Force White */
 }
 
-/* On other pages (default), Hamburger should be Black/Dark */
+/* On other pages (default), Hamburger should be White as requested */
 .hamburger {
-    color: #333;
+    color: white !important;
+}
+
+.hamburger svg path {
+    stroke: white !important; /* Force path color */
 }
 
 
 /* Mobile Initial hidden by default on Desktop */
 .mobile-initial {
+    display: none;
+}
+
+/* Close Button Hidden by default (Desktop) */
+.close-btn {
     display: none;
 }
 
@@ -178,8 +192,10 @@ header{
 
     /* --- Premium Sidebar Menu Design --- */
     
+    /* --- Premium Sidebar Menu Design --- */
+    
     #button {
-        position: fixed;
+        position: fixed !important;
         top: 0;
         right: -100%; /* Start off-screen Right */
         left: auto; /* Reset left */
@@ -188,11 +204,11 @@ header{
         height: 100vh; /* Full height */
         background: rgba(18, 18, 18, 0.98); /* Less transparent, more solid panel */
         backdrop-filter: blur(10px);
-        flex-direction: column;
+        flex-direction: column !important; /* Force Vertical Stack */
         justify-content: flex-start;
         padding-top: 80px; /* Space for close button or just margin */
         padding-left: 30px; /* Left-align content */
-        gap: 25px;
+        gap: 25px !important;
         visibility: hidden;
         opacity: 0;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -216,6 +232,7 @@ header{
         padding: 5px;
         border-radius: 50%;
         transition: background 0.3s;
+        display: block !important; /* Force visible on mobile */
     }
     .close-btn:hover {
         background: rgba(255,255,255,0.1);
@@ -237,11 +254,10 @@ header{
         transition: all 0.3s;
     }
 
-    /* Remove inline style margin from TSX if possible, 
-       but gap handles it well. We can override svg margin if needed. */
+    /* Show icons on Mobile */
     #button .a svg {
-        min-width: 24px; /* Prevent squishing */
-        margin-right: 0 !important; /* Let gap handle spacing */
+        display: block !important; /* Force visible on mobile */
+        min-width: 24px; 
     }
 
     #button .a:after {

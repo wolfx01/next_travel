@@ -1,27 +1,27 @@
 import { NextResponse } from 'next/server';
-import cities from 'all-the-cities';
+import curatedPlaces from '@/lib/data/places.json';
 import connectToDatabase from '@/lib/db';
 import PlaceDetails from '@/lib/models/PlaceDetails';
-import path from 'path';
-import fs from 'fs';
 
-// Helper: Assign stable ID
-cities.forEach((city: any, index: number) => {
-  city.id = index;
-});
-
-// Load curated places
-const placesPath = path.join(process.cwd(), 'lib/data/places.json');
-const curatedPlaces = JSON.parse(fs.readFileSync(placesPath, 'utf8'));
-const curatedPlacesMap = new Map(curatedPlaces.map((p: any) => [p.name.toLowerCase(), p]));
-
-const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
-
+// Shared Interface (matches simple usage)
 interface GeminiDetails {
   language: string;
   currency: string;
   description: string;
 }
+
+// ---------------------------------------------------------
+// Helper: Normalize Data (Same logic as list/search API)
+// ---------------------------------------------------------
+const placesList = curatedPlaces as any[];
+const processedCities = placesList.map((city: any, index: number) => ({
+  ...city,
+  id: city.id !== undefined ? city.id : index,
+  population: city.population || 100000,
+  country: city.country || 'Unknown'
+}));
+
+const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
 
 async function fetchPlaceDetailsFromGemini(city: string, country: string): Promise<GeminiDetails | { error: string }> {
   if (!process.env.GEMINI_API_KEY) {
@@ -100,14 +100,25 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     await connectToDatabase();
     const { id: idStr } = await params;
     const id = parseInt(idStr);
-    const city = cities[id];
+    
+    // Find city by ID from the local JSON source
+    const city = processedCities.find((c: any) => c.id === id);
 
     if (!city) {
       return NextResponse.json({ error: "Place not found" }, { status: 404 });
     }
 
-    const curated = curatedPlacesMap.get(city.name.toLowerCase()) as any;
-    const countryName = regionNames.of(city.country) || city.country;
+    let countryName = city.country;
+    try {
+        if (city.countryCode) {
+            countryName = regionNames.of(city.countryCode) || city.country;
+        } else if (city.country && city.country.length === 2) {
+            countryName = regionNames.of(city.country) || city.country;
+        }
+    } catch (e) {
+        // Fallback to whatever string is in city.country
+        console.warn(`Could not resolve country name for ${city.country}`);
+    }
 
     // Helper for stable random ratings
     function getStableRating(name: string) {
@@ -124,14 +135,15 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     const safeDetails = !hasError ? (geminiDetails as GeminiDetails) : null;
 
     const placeDetails = {
-      id: id,
+      id: city.id,
       name: city.name,
       country: city.country,
       countryName: countryName,
+      city: city.name, // Ensure city field exists for frontend
       population: city.population,
-      rating: curated ? curated.rating : getStableRating(city.name),
-      image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400',
-      description: safeDetails?.description || (curated ? curated.description : `A beautiful city in ${countryName} with a population of ${city.population.toLocaleString()}.`),
+      rating: city.rating || getStableRating(city.name),
+      image: city.image || 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400',
+      description: safeDetails?.description || city.description || `A beautiful city in ${countryName} with a population of ${city.population.toLocaleString()}.`,
       currency: safeDetails?.currency || "Unknown",
       language: safeDetails?.language || "Unknown"
     };

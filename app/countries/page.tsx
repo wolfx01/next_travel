@@ -48,11 +48,15 @@ export default function Countries() {
   };
 
   return (
-    <main style={{ marginTop: '0', paddingTop: '80px' }}> {/* Adjust margin for fixed header */}
-      <h1 className="page-title" style={{ textAlign: 'center', margin: '2rem 0', color: '#2c3e50' }}>
-        Explore Countries
-      </h1>
-      
+    <main style={{ marginTop: '0', paddingTop: '0' }}> 
+      <div className="countries-hero">
+        <div className="hero-overlay"></div>
+        <div className="countries-hero-content">
+            <h1>Explore Countries</h1>
+            <p>Discover exciting destinations and rich cultures across the globe.</p>
+        </div>
+
+      </div>
       <div className="countries-grid" style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',

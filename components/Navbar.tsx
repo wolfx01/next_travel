@@ -113,7 +113,9 @@ export default function Navbar() {
             </>
           ) : (
             <div className="logdiv" id="userInitial" style={{ display: 'flex' }}>
-              <span id="initialCircle">{user.initial}</span>
+              <Link href="/profile" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+                <span id="initialCircle">{user.initial}</span>
+              </Link>
               <a href="#" className="logout-btn" onClick={handleLogout}>Logout</a>
             </div>
           )}
@@ -122,7 +124,9 @@ export default function Navbar() {
         {/* Mobile Initial (Visible on Mobile Only) */}
         {user && (
             <div className="mobile-initial">
-                <span className="initial-circle">{user.initial}</span>
+                <Link href="/profile" style={{ textDecoration: 'none' }}>
+                    <span className="initial-circle">{user.initial}</span>
+                </Link>
             </div>
         )}
 

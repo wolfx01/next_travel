@@ -27,7 +27,9 @@ export async function GET() {
     return NextResponse.json({
       loggedIn: true,
       userName: user.userName,
-      email: user.email
+      email: user.email,
+      avatarUrl: user.avatarUrl,
+      coverUrl: user.coverUrl
     });
   } catch (err) {
     console.error('Check-Login API Error:', err);
