@@ -21,6 +21,7 @@ export default function AdminPostsPage() {
     const [posts, setPosts] = useState<Post[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [currentAdminId, setCurrentAdminId] = useState<string>("");
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const router = useRouter();
 
     useEffect(() => {
@@ -107,7 +108,21 @@ export default function AdminPostsPage() {
                                 </td>
                                 <td>
                                     {post.mediaUrl ? (
-                                        <a href={post.mediaUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#3498db', textDecoration: 'underline' }}>View</a>
+                                        <button 
+                                            onClick={() => setSelectedImage(post.mediaUrl || null)}
+                                            style={{ 
+                                                background: 'none', 
+                                                border: 'none', 
+                                                padding: 0, 
+                                                color: '#3498db', 
+                                                textDecoration: 'underline', 
+                                                cursor: 'pointer',
+                                                fontSize: 'inherit',
+                                                fontFamily: 'inherit'
+                                            }}
+                                        >
+                                            View
+                                        </button>
                                     ) : (
                                         <span style={{ color: '#bdc3c7' }}>None</span>
                                     )}
@@ -127,7 +142,61 @@ export default function AdminPostsPage() {
                 </table>
             </div>
 
+            {selectedImage && (
+                <div className="modal-overlay" onClick={() => setSelectedImage(null)}>
+                    <div className="modal-content" onClick={e => e.stopPropagation()}>
+                        <button className="close-modal-btn" onClick={() => setSelectedImage(null)}>&times;</button>
+                        <img src={selectedImage} alt="Post Media" />
+                    </div>
+                </div>
+            )}
+
             <style jsx>{`
+                .modal-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.85);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 9999;
+                    padding: 20px;
+                    backdrop-filter: blur(5px);
+                }
+                .modal-content {
+                    position: relative;
+                    max-width: 90%;
+                    max-height: 90vh;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                .modal-content img {
+                    max-width: 100%;
+                    max-height: 85vh;
+                    border-radius: 8px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                }
+                .close-modal-btn {
+                    position: absolute;
+                    top: -40px;
+                    right: -10px;
+                    background: none;
+                    border: none;
+                    color: white;
+                    font-size: 35px;
+                    cursor: pointer;
+                    line-height: 1;
+                    padding: 0 10px;
+                    transition: transform 0.2s;
+                }
+                .close-modal-btn:hover {
+                    transform: scale(1.1);
+                    color: #e74c3c;
+                }
                 .table-container {
                     background: white;
                     border-radius: 10px;
