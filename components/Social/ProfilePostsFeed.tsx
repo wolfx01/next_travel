@@ -49,7 +49,7 @@ export default function ProfilePostsFeed({ userId, isOwnProfile = false }: Profi
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            {posts.map((post: { _id: string; [key: string]: any }) => (
+            {posts.map((post: any) => (
                 <PostCard key={post._id} post={post} currentUserId={isOwnProfile ? userId : undefined} />
             ))}
         </div>
