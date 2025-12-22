@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import PostCard from './PostCard';
 
 interface ProfilePostsFeedProps {
@@ -12,7 +12,7 @@ export default function ProfilePostsFeed({ userId, isOwnProfile = false }: Profi
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const fetchUserPosts = async () => {
+    const fetchUserPosts = useCallback(async () => {
         try {
             const res = await fetch(`/api/posts?userId=${userId}`);
             if (res.ok) {
@@ -24,7 +24,7 @@ export default function ProfilePostsFeed({ userId, isOwnProfile = false }: Profi
         } finally {
             setLoading(false);
         }
-    };
+    }, [userId]);
 
     useEffect(() => {
         if (userId) fetchUserPosts();
@@ -33,7 +33,7 @@ export default function ProfilePostsFeed({ userId, isOwnProfile = false }: Profi
         const handlePostCreated = () => fetchUserPosts();
         window.addEventListener('postCreated', handlePostCreated);
         return () => window.removeEventListener('postCreated', handlePostCreated);
-    }, [userId]);
+    }, [userId, fetchUserPosts]);
 
     if (loading) return <div style={{ textAlign: 'center', padding: '20px', color: '#666' }}>Loading posts...</div>;
 
@@ -49,7 +49,7 @@ export default function ProfilePostsFeed({ userId, isOwnProfile = false }: Profi
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            {posts.map((post: any) => (
+            {posts.map((post: { _id: string; [key: string]: any }) => (
                 <PostCard key={post._id} post={post} currentUserId={isOwnProfile ? userId : undefined} />
             ))}
         </div>

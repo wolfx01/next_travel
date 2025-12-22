@@ -28,7 +28,7 @@ async function fetchFromUnsplash(query: string) {
     if (!response.ok) return null;
     const data = await response.json();
     return data.results && data.results.length > 0 ? data.results[0].urls.regular : null;
-  } catch (err) {
+  } catch {
     return null;
   }
 }
@@ -43,7 +43,7 @@ async function fetchFromPexels(query: string) {
     if (!response.ok) return null;
     const data = await response.json();
     return data.photos && data.photos.length > 0 ? data.photos[0].src.large : null;
-  } catch (err) {
+  } catch {
     return null;
   }
 }
@@ -56,7 +56,7 @@ async function fetchFromPixabay(query: string) {
     if (!response.ok) return null;
     const data = await response.json();
     return data.hits && data.hits.length > 0 ? data.hits[0].largeImageURL : null;
-  } catch (err) {
+  } catch {
     return null;
   }
 }
