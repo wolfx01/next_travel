@@ -27,8 +27,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Travel Project",
-  description: "Travel beyond borders, live beyond limits",
+  title: 'Explo - Discover the Best Destinations in Morocco',
+  description: 'Your smart guide to travel and explore tourist attractions using AI.',
+  keywords: 'travel, tourism, Morocco, destinations, AI',
 };
 
 export const viewport: Viewport = {
