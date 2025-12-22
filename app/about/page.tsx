@@ -12,8 +12,8 @@ export default function About() {
 
         <section className="about-section">
             <h2>Our Story</h2>
-            <p>Founded in 2025, Travel Beyond Limits started with a simple idea: to make travel accessible, enjoyable, and enriching for everyone. What began as a small blog sharing travel tips and hidden gems has grown into a comprehensive platform dedicated to helping you discover the world's most breathtaking destinations. Our team of passionate travelers and tech enthusiasts works tirelessly to bring you personalized recommendations, authentic experiences, and seamless planning tools.</p>
-            <p>We've journeyed across continents, climbed mountains, explored ancient ruins, and relaxed on pristine beaches. Every experience has fueled our desire to share the magic of travel with you. We understand that every traveler is unique, and that's why we're committed to providing diverse options and insights to match your individual wanderlust.</p>
+            <p>Founded in 2025, Travel Beyond Limits started with a simple idea: to make travel accessible, enjoyable, and enriching for everyone. What began as a small blog sharing travel tips and hidden gems has grown into a comprehensive platform dedicated to helping you discover the world&apos;s most breathtaking destinations. Our team of passionate travelers and tech enthusiasts works tirelessly to bring you personalized recommendations, authentic experiences, and seamless planning tools.</p>
+            <p>We&apos;ve journeyed across continents, climbed mountains, explored ancient ruins, and relaxed on pristine beaches. Every experience has fueled our desire to share the magic of travel with you. We understand that every traveler is unique, and that&apos;s why we&apos;re committed to providing diverse options and insights to match your individual wanderlust.</p>
         </section>
 
         <section className="about-section">

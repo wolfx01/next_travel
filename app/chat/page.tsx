@@ -37,6 +37,63 @@ export default function ChatPage() {
     const searchParams = useSearchParams();
     const startContactId = searchParams.get('userId');
 
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    const fetchConversations = async () => {
+        if (!currentUser) return;
+        try {
+            const res = await fetch(`/api/chat?currentUserId=${currentUser._id}`);
+            const data = await res.json();
+            if (Array.isArray(data)) {
+                setConversations(data);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const fetchMessages = async (contactId: string) => {
+        if (!currentUser) return;
+        try {
+            const res = await fetch(`/api/chat?currentUserId=${currentUser._id}&contactId=${contactId}`);
+            const data = await res.json();
+            if (Array.isArray(data)) {
+                setMessages(data);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleSendMessage = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!newMessage.trim() || !activeChat || !currentUser) return;
+
+        const tempMsg = newMessage;
+        setNewMessage(""); // Optimistic clear
+
+        try {
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    senderId: currentUser._id,
+                    receiverId: activeChat._id,
+                    content: tempMsg
+                })
+            });
+
+            if (res.ok) {
+                fetchMessages(activeChat._id);
+                fetchConversations(); // Update last message listing
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     useEffect(() => {
         // 1. Get Current User
         fetch('/api/auth/check-login')
@@ -86,60 +143,6 @@ export default function ChatPage() {
         scrollToBottom();
     }, [messages]);
 
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    };
-
-    const fetchConversations = async () => {
-        try {
-            const res = await fetch(`/api/chat?currentUserId=${currentUser._id}`);
-            const data = await res.json();
-            if (Array.isArray(data)) {
-                setConversations(data);
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const fetchMessages = async (contactId: string) => {
-        try {
-            const res = await fetch(`/api/chat?currentUserId=${currentUser._id}&contactId=${contactId}`);
-            const data = await res.json();
-            if (Array.isArray(data)) {
-                setMessages(data);
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const handleSendMessage = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!newMessage.trim() || !activeChat || !currentUser) return;
-
-        const tempMsg = newMessage;
-        setNewMessage(""); // Optimistic clear
-
-        try {
-            const res = await fetch('/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    senderId: currentUser._id,
-                    receiverId: activeChat._id,
-                    content: tempMsg
-                })
-            });
-
-            if (res.ok) {
-                fetchMessages(activeChat._id);
-                fetchConversations(); // Update last message listing
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
 
     if (!currentUser) return <div style={{ paddingTop: '100px', textAlign: 'center' }}>Please log in to chat.</div>;
 
