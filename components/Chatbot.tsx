@@ -83,6 +83,7 @@ export default function Chatbot() {
     <>
       <div id="chat-icon" onClick={() => setIsOpen(true)} style={{ display: isOpen ? 'none' : 'flex' }}>
         <video src="/video/robot.mp4" autoPlay loop muted playsInline></video>
+        <span className="chatbot-text">Your Travel AI</span>
       </div>
 
       <div id="chat-window" style={{ display: isOpen ? 'flex' : 'none' }}>

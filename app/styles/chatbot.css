@@ -3,31 +3,64 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 65px;
-  height: 65px;
-  border-radius: 50%;
+  width: 55px; /* Matched to Planner Button */
+  height: 55px;
+  border-radius: 30px; 
   cursor: pointer;
   z-index: 9999;
   overflow: hidden;
-  box-shadow: none;
-  background: transparent;
-  transition: transform 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  background: white; 
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border: none;
   display: flex;
   align-items: center;
-  justify-content: center;
+  white-space: nowrap;
+  animation: floatPulse 3s infinite ease-in-out;
+}
+
+@keyframes floatPulse {
+  0% { box-shadow: 0 4px 15px rgba(0,0,0,0.1); transform: translateY(0); }
+  50% { box-shadow: 0 8px 25px rgba(0, 188, 212, 0.3); transform: translateY(-3px); }
+  100% { box-shadow: 0 4px 15px rgba(0,0,0,0.1); transform: translateY(0); }
 }
 
 #chat-icon video {
-  width: 100%;
-  height: 100%;
+  min-width: 55px; /* Matched size */
+  width: 55px;     /* Enforce width */
+  height: 55px;
   object-fit: cover;
   mix-blend-mode: multiply; 
+  transition: transform 0.3s;
+  flex-shrink: 0;  /* Prevent squashing */
+  border-radius: 50%; /* clean clipping */
 }
 
 #chat-icon:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  width: 180px; 
+  background: linear-gradient(135deg, #00bcd4, #1abc9c); 
+  box-shadow: 0 8px 25px rgba(0, 188, 212, 0.4);
+  animation: none; /* Stop pulse on hover */
+}
+
+#chat-icon:hover video {
+  transform: scale(1.1) rotate(10deg);
+}
+
+.chatbot-text {
+  color: white;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: all 0.3s ease;
+  pointer-events: none; /* Let clicks pass through */
+}
+
+#chat-icon:hover .chatbot-text {
+  opacity: 1;
+  transform: translateX(-5px);
 }
 
 #chat-window {

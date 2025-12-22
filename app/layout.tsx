@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
+import FloatingPlannerButton from "@/components/FloatingPlannerButton";
 import "./styles/globals.css";
 import "./styles/home.css";
 import "./styles/Footer.css";
@@ -60,6 +61,7 @@ export default function RootLayout({
         {children}
         <FooterWrapper />
         <Chatbot />
+        <FloatingPlannerButton />
       </body>
     </html>
   );
