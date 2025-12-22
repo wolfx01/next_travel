@@ -1,0 +1,270 @@
+/* Social Feed & Interaction Styles */
+.create-post-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Softer shadow */
+    margin-bottom: 25px;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+.create-post-header {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.create-post-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.create-post-input {
+    width: 100%;
+    border: none;
+    resize: none;
+    font-size: 0.95rem; /* Slightly smaller font */
+    outline: none;
+    min-height: 60px; /* Reduced height */
+    font-family: inherit;
+    background: #f8f9fa; /* Light grey background for input area */
+    border-radius: 12px;
+    padding: 12px;
+    transition: background 0.2s, min-height 0.2s;
+}
+
+.create-post-input:focus {
+    background: #fff;
+    box-shadow: inset 0 0 0 1px #e0e0e0;
+    min-height: 80px; /* Expand on focus */
+}
+
+.create-post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.post-btn-primary {
+    background: linear-gradient(135deg, #00bcd4, #0097a7);
+    color: white;
+    border: none;
+    padding: 8px 24px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: transform 0.2s, opacity 0.2s;
+    box-shadow: 0 3px 10px rgba(0, 188, 212, 0.2);
+}
+
+.post-btn-primary:hover:not(:disabled) {
+    transform: translateY(-1px);
+    opacity: 0.95;
+}
+
+.post-btn-primary:disabled {
+    background: #e0e0e0;
+    cursor: not-allowed;
+    box-shadow: none;
+    color: #999;
+}
+
+.media-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.media-btn:hover {
+    background: #f0f2f5;
+    color: #00bcd4;
+}
+
+/* Post Card Styles */
+.post-card {
+    background: white;
+    border-radius: 12px;
+    padding: 0; /* Remove default padding to control sections */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.02);
+    margin-bottom: 24px;
+    border: 1px solid rgba(0,0,0,0.06);
+    overflow: hidden; /* Ensure images follow border radius */
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.post-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    padding: 16px 16px 12px;
+}
+
+.post-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.post-user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-user-info h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: #1a1a1a;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.post-meta {
+    font-size: 0.8rem;
+    color: #65676b;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.post-content {
+    padding: 4px 16px 16px;
+    text-align: left; /* Explicitly align left */
+}
+
+.post-content p {
+    line-height: 1.6; /* Improve readability */
+    color: #1c1e21; /* Slightly softer black */
+    font-size: 1rem; /* Standard size */
+    font-weight: 400;
+    white-space: pre-wrap;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* System fonts for familiarity */
+}
+
+.post-media {
+    margin-top: 0;
+    background: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.post-media img {
+    width: 100%;
+    max-height: 600px; /* Increased max height */
+    object-fit: cover; /* Fill the width, might crop top/bottom */
+    display: block;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.post-actions {
+    display: flex;
+    justify-content: space-around; /* Evenly distribute buttons */
+    border-top: 1px solid #f0f2f5;
+    padding: 4px;
+    margin: 0;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #65676b;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+    flex: 1; /* Make buttons verify full width of area */
+    font-weight: 600;
+}
+
+.action-btn:hover {
+    background: #f2f2f2;
+    color: #4b4f56;
+}
+
+.action-btn.liked {
+    color: #e91e63;
+}
+
+.action-btn.liked i {
+    animation: like-bounce 0.4s;
+}
+
+@keyframes like-bounce {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+/* Comments Section */
+.comments-section {
+    background: #fdfdfd;
+    padding: 12px 16px;
+    border-top: 1px solid #f0f2f5;
+}
+
+.comments-section form {
+    margin-top: 12px;
+}
+
+.comments-section img {
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.action-btn.liked {
+    color: #e91e63;
+}
+
+.preview-container {
+    position: relative;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.remove-preview-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #fff;
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}

@@ -33,8 +33,9 @@
 
 .edit-cover-btn {
     position: absolute;
-    bottom: 20px;
-    right: 40px;
+    top: 100px; /* Below Navbar */
+    right: 30px;
+    z-index: 10; /* Ensure it's on top */
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
     color: white;
@@ -379,5 +380,13 @@
     
     .cover-photo-container {
         height: 250px;
+    }
+
+    .edit-cover-btn {
+        top: 80px; /* Below Navbar on mobile */
+        right: 15px;
+        bottom: auto; 
+        padding: 6px 12px;
+        font-size: 0.75rem;
     }
 }

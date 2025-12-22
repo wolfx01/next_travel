@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import '@/app/styles/hero.css';
 
 export default function Places() {
   return (
@@ -126,11 +127,11 @@ function PlacesContent() {
 
   return (
     <main style={{ marginTop: '0', padding: '0' }}>
-      <div className="places-hero">
+      <div className="premium-hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop')" }}>
         <div className="hero-overlay"></div>
-        <div className="places-hero-content">
-            <h1>{countryFilter ? `Places in ${countryFilter}` : 'Explore Places'}</h1>
-            <p>Find the best tourist attractions and hidden gems.</p>
+        <div className="hero-content">
+            <h1 className="hero-title">{countryFilter ? `Treasures of ${countryFilter}` : 'Discover Hidden Gems'}</h1>
+            <p className="hero-subtitle">From bustling cities to serene landscapes, find the perfect place for your next journey.</p>
         </div>
       </div>
 
@@ -170,6 +171,16 @@ function PlacesContent() {
         maxWidth: '1200px',
         margin: '0 auto'
       }}>
+        {loading && places.length === 0 && Array.from({ length: 6 }).map((_, i) => (
+             <div key={i} className="" style={{ background: 'white', borderRadius: '16px', overflow: 'hidden', height: '350px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
+                 <div className="skeleton" style={{ width: '100%', height: '200px' }}></div>
+                 <div style={{ padding: '15px' }}>
+                     <div className="skeleton skeleton-text" style={{ width: '70%', height: '24px', marginBottom: '10px' }}></div>
+                     <div className="skeleton skeleton-text" style={{ width: '40%' }}></div>
+                 </div>
+             </div>
+        ))}
+
         {places.map((place, index) => {
           const isSaved = userSavedPlaces.includes(place.id.toString());
           const key = place.id;

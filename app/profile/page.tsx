@@ -3,12 +3,17 @@
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import '../styles/profile.css';
+import CreatePost from '@/components/Social/CreatePost';
+import PostCard from '@/components/Social/PostCard';
+import ProfilePostsFeed from '@/components/Social/ProfilePostsFeed';
 
 interface UserData {
+  mongoId: string; // Added for social features
   userName: string;
   email: string;
   bio?: string;
   savedPlacesCount?: number;
+  visitedPlaces?: any[]; // Array of visited places objects
 }
 
 export default function ProfilePage() {
@@ -35,10 +40,12 @@ export default function ProfilePage() {
       .then((data) => {
         if (data.loggedIn) {
           setUser({ 
+            mongoId: data.mongoId || data.userId || data._id, // Handle potential field names
             userName: data.userName, 
             email: data.email, 
             bio: data.bio, 
-            savedPlacesCount: data.savedPlacesCount 
+            savedPlacesCount: data.savedPlacesCount,
+            visitedPlaces: data.visitedPlaces
           });
           if (data.avatarUrl) setAvatarImage(data.avatarUrl);
           if (data.coverUrl) setCoverImage(data.coverUrl);
@@ -247,7 +254,48 @@ export default function ProfilePage() {
               </div>
           </div>
 
+          {/* Social Section on Profile */}
+          <div className="profile-social-section" style={{ marginTop: '40px', width: '100%' }}>
+            
+            {/* My Travel Journey (Visited Places) */}
+            <h2 style={{ fontSize: '1.5rem', marginBottom: '20px', color: '#2c3e50', borderBottom: '2px solid #eee', paddingBottom: '10px' }}>
+                <i className="fas fa-globe-americas" style={{ marginRight: '10px', color: '#27ae60' }}></i>
+                My Travel Journey
+            </h2>
+            
+            <div className="visited-places-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '15px', marginBottom: '40px' }}>
+                {user.visitedPlaces && user.visitedPlaces.length > 0 ? (
+                    user.visitedPlaces.map((p: any, i: number) => (
+                        <div key={i} style={{ background: 'white', borderRadius: '10px', padding: '15px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', textAlign: 'center' }}>
+                            <div style={{ fontSize: '2rem', color: '#27ae60', marginBottom: '10px' }}><i className="fas fa-map-marker-alt"></i></div>
+                            <h4 style={{ margin: '0 0 5px 0', fontSize: '1rem' }}>{p.placeName}</h4>
+                            <small style={{ color: '#888' }}>{new Date(p.dateVisited).toLocaleDateString()}</small>
+                        </div>
+                    ))
+                ) : (
+                    <p style={{ gridColumn: '1/-1', textAlign: 'center', color: '#888', fontStyle: 'italic' }}>
+                        No places marked as visited yet. Go explore!
+                    </p>
+                )}
+            </div>
+
+            <h2 style={{ fontSize: '1.5rem', marginBottom: '20px', color: '#2c3e50', borderBottom: '2px solid #eee', paddingBottom: '10px' }}>
+                <i className="fas fa-feather-alt" style={{ marginRight: '10px', color: '#3498db' }}></i>
+                My Travel Stories
+            </h2>
+            
+            {/* Create Post Widget */}
+            <CreatePost user={{ ...user, _id: user.mongoId }} />
+
+            {/* User Posts Feed */}
+            <div className="profile-posts-feed">
+                <ProfilePostsFeed userId={user.mongoId} isOwnProfile={true} />
+            </div>
+          </div>
+
       </div>
     </main>
   );
 }
+
+

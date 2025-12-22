@@ -2,11 +2,13 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import NotificationDropdown from './Social/NotificationDropdown';
 import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState<{ name: string; initial: string } | null>(null);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [user, setUser] = useState<{ name: string; initial: string; _id: string; isAdmin: boolean } | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -20,7 +22,9 @@ export default function Navbar() {
       if (data.loggedIn && data.userName) {
         setUser({ 
           name: data.userName, 
-          initial: data.userName.charAt(0).toUpperCase() 
+          initial: data.userName.charAt(0).toUpperCase(),
+          _id: data.mongoId,
+          isAdmin: data.isAdmin
         });
       }
     } catch (error) {
@@ -36,7 +40,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className={pathname === '/' ? 'home-nav' : ''}>
+    <header className={['/', '/countries', '/places', '/people'].includes(pathname) || pathname.startsWith('/places/') || pathname.startsWith('/profile/') ? 'home-nav' : ''}>
       <div id="divlogo">
         <Link href="/">
           <img src="/images/Travel.png" alt="Travel Logo" id="logo" style={{ cursor: 'pointer' }} />
@@ -74,6 +78,32 @@ export default function Navbar() {
             </svg>
             Places
         </Link>
+        <Link href="/people" className={`a ${pathname === '/people' ? 'active' : ''}`}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '10px'}}>
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            People
+        </Link>
+        <Link href="/chat" className={`a ${pathname === '/chat' ? 'active' : ''}`}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '10px'}}>
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            Chat
+        </Link>
+        {user?.isAdmin && (
+            <Link href="/admin" className={`a ${pathname.startsWith('/admin') ? 'active' : ''}`} style={{ color: '#e74c3c' }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '10px'}}>
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                Admin
+            </Link>
+        )}
         <Link href="/about" className={`a ${pathname === '/about' ? 'active' : ''}`}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '10px'}}>
                 <circle cx="12" cy="12" r="10"></circle>
@@ -91,10 +121,10 @@ export default function Navbar() {
                 <Link href="/register" className="alogin">Sign Up</Link>
             </div>
           ) : (
-            <div className="user-info">
-              {/* Initial moved to Header, only Logout remains here */}
-              <a href="#" className="logout-btn" onClick={handleLogout}>Logout</a>
-            </div>
+            <>
+              {/* Logout Button directly in mobile-auth */}
+              <a href="#" className="logout-btn mobile-logout" onClick={handleLogout}>Logout</a>
+            </>
           )}
         </div>
       </div>
@@ -112,11 +142,40 @@ export default function Navbar() {
               </div>
             </>
           ) : (
-            <div className="logdiv" id="userInitial" style={{ display: 'flex' }}>
-              <Link href="/profile" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+            <div className="logdiv" id="userInitial" style={{ display: 'flex', alignItems: 'center', gap: '20px', position: 'relative' }}>
+              {/* Notification Dropdown */}
+              <NotificationDropdown userId={user._id} />
+
+              {/* Profile Dropdown Trigger */}
+              <div 
+                className="profile-dropdown-trigger" 
+                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+              >
                 <span id="initialCircle">{user.initial}</span>
-              </Link>
-              <a href="#" className="logout-btn" onClick={handleLogout}>Logout</a>
+                <i className={`fas fa-chevron-down ${isProfileMenuOpen ? 'rotate-180' : ''}`} style={{ fontSize: '0.8rem', color: '#333', transition: 'transform 0.2s' }}></i>
+              </div>
+
+              {/* Dropdown Menu */}
+              {isProfileMenuOpen && (
+                <div className="profile-dropdown-menu">
+                    <div className="dropdown-header">
+                        <p className="user-name">{user.name}</p>
+                        <p className="user-role">{user.isAdmin ? 'Administrator' : 'Explorer'}</p>
+                    </div>
+                    <div className="dropdown-divider"></div>
+                    <Link href="/profile" className="dropdown-item" onClick={() => setIsProfileMenuOpen(false)}>
+                        <i className="fas fa-user"></i> My Profile
+                    </Link>
+                    <Link href="/settings" className="dropdown-item" onClick={() => setIsProfileMenuOpen(false)}>
+                        <i className="fas fa-cog"></i> Settings
+                    </Link>
+                    <div className="dropdown-divider"></div>
+                    <a href="#" className="dropdown-item logout" onClick={handleLogout}>
+                        <i className="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+              )}
             </div>
           )}
         </div>

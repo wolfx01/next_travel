@@ -2,15 +2,44 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import CreatePost from '@/components/Social/CreatePost';
+import PostCard from '@/components/Social/PostCard';
+import '@/app/styles/home.css';
 
 export default function Home() {
   const [topDestinations, setTopDestinations] = useState<any[]>([]);
   const [topPlaces, setTopPlaces] = useState<any[]>([]);
+  const [posts, setPosts] = useState<any[]>([]);
+  const [user, setUser] = useState<any>(null);
+  const [loadingDestinations, setLoadingDestinations] = useState(true);
+  const [loadingPlaces, setLoadingPlaces] = useState(true);
 
   useEffect(() => {
     fetchTopDestinations();
     fetchTopPlaces();
+    fetchUserAndPosts();
   }, []);
+
+  const fetchUserAndPosts = async () => {
+      // Check login
+      try {
+          const authRes = await fetch('/api/auth/check-login');
+          const authData = await authRes.json();
+          if (authData.loggedIn) {
+              setUser({ _id: authData.mongoId, userName: authData.userName, avatarUrl: authData.avatarUrl });
+          }
+      } catch (e) { console.error(e); }
+
+      fetchPosts();
+  };
+
+  const fetchPosts = async () => {
+      try {
+          const res = await fetch('/api/posts?limit=5'); // Limit to 5 for homepage
+          const data = await res.json();
+          if (Array.isArray(data)) setPosts(data.slice(0, 5));
+      } catch (e) { console.error(e); }
+  };
 
   const fetchTopDestinations = async () => {
     try {
@@ -28,6 +57,8 @@ export default function Home() {
       setTopDestinations(top);
     } catch (error) {
       console.error(error);
+    } finally {
+        setLoadingDestinations(false);
     }
   };
 
@@ -54,6 +85,8 @@ export default function Home() {
 
     } catch (error) {
       console.error(error);
+    } finally {
+        setLoadingPlaces(false);
     }
   };
 
@@ -83,8 +116,15 @@ export default function Home() {
           I should check `app/styles/styhom.css` to see `.hero` styles.
       */}
       <section className="hero">
-        <video className="vid" autoPlay loop muted src="/video/1851190-uhd_3840_2160_25fps.mp4"></video>
-        <p className="home-hero-text">Travel beyond borders <br /> live beyond limits </p>
+        <video className="vid" autoPlay loop muted playsInline src="/video/1851190-uhd_3840_2160_25fps.mp4"></video>
+        <div className="hero-overlay"></div>
+        <div className="home-hero-text">
+            <h1 className="hero-title-main">Travel Beyond Borders</h1>
+            <p className="hero-subtitle-main">Live beyond limits. Discover the most breathtaking destinations and share your journey with the world.</p>
+            <Link href="/places" className="hero-cta-btn">
+                Start Your Journey
+            </Link>
+        </div>
       </section>
 
       <h1 className="top">
@@ -93,8 +133,18 @@ export default function Home() {
       </h1>
       
       <div className="places-grid" id="top-destinations-grid">
-        {topDestinations.length === 0 ? (
-          <div style={{ textAlign: 'center', width: '100%', gridColumn: '1/-1' }}>Loading top destinations...</div>
+        {loadingDestinations ? (
+             Array.from({ length: 3 }).map((_, i) => (
+                 <div key={i} className="country-card" style={{ height: '400px', background: 'white', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
+                     <div className="skeleton" style={{ width: '100%', height: '200px' }}></div>
+                     <div style={{ padding: '20px' }}>
+                         <div className="skeleton skeleton-text" style={{ width: '60%', height: '28px', marginBottom: '15px' }}></div>
+                         <div className="skeleton skeleton-text"></div>
+                         <div className="skeleton skeleton-text"></div>
+                         <div className="skeleton skeleton-text" style={{ width: '80%' }}></div>
+                     </div>
+                 </div>
+            ))
         ) : (
           topDestinations.map((country, idx) => (
             <CountryCard key={idx} country={country} />
@@ -108,13 +158,42 @@ export default function Home() {
       </h1>
 
       <div className="places-grid" id="top-places-grid">
-         {topPlaces.length === 0 ? (
-          <div style={{ textAlign: 'center', width: '100%', gridColumn: '1/-1' }}>Loading top places...</div>
+         {loadingPlaces ? (
+             Array.from({ length: 3 }).map((_, i) => (
+                 <div key={i} className="" style={{ background: 'white', borderRadius: '16px', overflow: 'hidden', height: '350px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
+                     <div className="skeleton" style={{ width: '100%', height: '200px' }}></div>
+                     <div style={{ padding: '15px' }}>
+                         <div className="skeleton skeleton-text" style={{ width: '70%', height: '24px', marginBottom: '10px' }}></div>
+                         <div className="skeleton skeleton-text" style={{ width: '40%' }}></div>
+                     </div>
+                 </div>
+            ))
         ) : (
           topPlaces.map((place, idx) => (
             <PlaceCard key={idx} place={place} />
           ))
         )}
+      </div>
+
+      <div className="container" style={{ marginTop: '60px' }}>
+        <h1 className="top">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40px" viewBox="0 0 512 512"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+            Travel Feed :
+        </h1>
+        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+            <div className="home-feed-stream">
+                {posts.map((post: any) => (
+                    <PostCard key={post._id} post={post} currentUserId={user?._id} />
+                ))}
+            </div>
+             {posts.length > 0 && (
+                <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                    <Link href="/feed" style={{ display: 'inline-block', padding: '10px 20px', background: '#00bcd4', color: 'white', borderRadius: '25px', textDecoration: 'none', fontWeight: '600' }}>
+                        View All Posts
+                    </Link>
+                </div>
+            )}
+        </div>
       </div>
 
       <section className="why-choose-us">

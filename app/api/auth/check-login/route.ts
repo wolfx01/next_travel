@@ -26,13 +26,16 @@ export async function GET() {
     // Mock response for debugging
     return NextResponse.json({
       loggedIn: true,
+      mongoId: user._id, // Return explicit ID for handy usage
+      userId: user._id, // Also valid
       userName: user.userName,
       email: user.email,
       avatarUrl: user.avatarUrl,
       coverUrl: user.coverUrl,
       bio: user.bio,
-      savedPlacesCount: user.savedPlaces?.length || 0,
-      savedPlaces: user.savedPlaces || []
+      savedPlaces: user.savedPlaces || [],
+      visitedPlaces: user.visitedPlaces || [],
+      isAdmin: user.isAdmin || false
     });
   } catch (err) {
     console.error('Check-Login API Error:', err);

@@ -12,15 +12,27 @@ export default function PlaceDetails() {
   const [comments, setComments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [commentText, setCommentText] = useState("");
-  const [userName, setUserName] = useState(""); // We might get this from context or local storage
+  const [userName, setUserName] = useState("");
+  const [userId, setUserId] = useState(""); // MongoID for API calls
+  const [isVisited, setIsVisited] = useState(false);
   
   // Gallery
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
   
   useEffect(() => {
-    // Get user from local storage (legacy compatibility) or API
-    const storedUser = localStorage.getItem('userName');
-    if (storedUser) setUserName(storedUser);
+    // Check login status to get full user details including ID
+    fetch('/api/auth/check-login')
+        .then(res => res.json())
+        .then(data => {
+            if (data.loggedIn) {
+                setUserName(data.userName);
+                setUserId(data.mongoId || data.userId || data._id);
+                // Check if already visited in local state or fetch from API (optional enhancement)
+                if (data.savedPlaces && data.savedPlaces.some((p: any) => p === id)) {
+                    // Logic for saved places if needed
+                }
+            }
+        });
 
     fetchPlaceDetails();
     fetchComments();
@@ -100,6 +112,40 @@ export default function PlaceDetails() {
     }
   };
 
+  const handleVisited = async () => {
+      if (!userId) {
+          alert("Please log in to mark place as visited");
+          return;
+      }
+
+      try {
+          const res = await fetch('/api/user/visited', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                  userId: userId,
+                  placeId: id,
+                  placeName: place.name
+              })
+          });
+
+          if (res.ok) {
+              setIsVisited(true);
+              alert("Marked as visited! Added to your Travel Journey.");
+          } else {
+              const data = await res.json();
+              if (data.message === "Already visited") {
+                  setIsVisited(true);
+                  alert("You have already visited this place!");
+              } else {
+                  alert("Something went wrong");
+              }
+          }
+      } catch (error) {
+          console.error(error);
+      }
+  };
+
   // Helper helper to dynamic image
   const [mainImage, setMainImage] = useState<string>('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200'); // Initialize with default
 
@@ -125,6 +171,24 @@ export default function PlaceDetails() {
             <div className="hero-text">
                 <h1>{place.name}, {place.countryName}</h1>
                 <p><i className="fas fa-map-marker-alt"></i> {place.city || place.name}, {place.countryName}</p>
+                <button 
+                    onClick={handleVisited}
+                    style={{
+                        marginTop: '15px',
+                        padding: '10px 20px',
+                        background: isVisited ? '#4caf50' : 'rgba(255,255,255,0.2)',
+                        border: '2px solid white',
+                        color: 'white',
+                        borderRadius: '30px',
+                        cursor: 'pointer',
+                        fontSize: '1rem',
+                        fontWeight: 'bold',
+                        backdropFilter: 'blur(5px)',
+                        transition: 'all 0.3s'
+                    }}
+                >
+                    <i className={`fas ${isVisited ? 'fa-check-circle' : 'fa-map-pin'}`}></i> {isVisited ? 'Visited' : 'I Was Here'}
+                </button>
             </div>
         </section>
 

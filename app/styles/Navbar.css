@@ -2,8 +2,7 @@ header{
     position: fixed;
     top: 0;
     left: 0;
-    background-color: rgba(255, 255, 255, 0); /* Default transparent for Home */
-    width: 100%;
+background-color: rgba(0, 0, 0, 0);    width: 100%;
     display: flex;
     z-index: 1000; 
     height: 70px;
@@ -60,15 +59,21 @@ header{
 }
 
 /* Add other Navbar specific styles if they were missing or implicit */
+/* Add other Navbar specific styles if they were missing or implicit */
 #button {
     display: flex;
-    gap: 80px;
+    gap: 15px; /* Reduced gap from 80px */
+    align-items: center;
 }
 
 .a {
     text-decoration: none;
     color: black;
-    font-weight: bold;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 25px; /* Pill shape */
+    transition: all 0.3s ease;
+    border: 1px solid transparent; /* Prevent layout shift on border change */
 }
 
 /* Hide Icons on Desktop by default */
@@ -76,8 +81,33 @@ header{
     display: none;
 }
 
+.a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
 .a.active {
-    color: #1301b0;
+    color: #00bcd4;
+    background-color: white;
+    box-shadow: 0 4px 15px rgba(0,188,212,0.3);
+}
+
+/* Keep Home nav links white by default, but update hover/active */
+.home-nav .a {
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.home-nav .a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.home-nav .a.active {
+    color: #00bcd4;
+    background-color: white;
+    text-shadow: none;
 }
 
 .hamburger {
@@ -139,16 +169,7 @@ header{
 }
 
 
-/* Home Page specific styles */
-.home-nav .a {
-    color: white;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5); /* Improve readability */
-}
-
-.home-nav .a.active {
-    color: #00bcd4; /* Cyan for active/hover */
-    border-bottom: 2px solid #00bcd4;
-}
+/* Home Page specific styles handled above now */
 
 /* On Home Page, Hamburger should be White locally */
 .home-nav .hamburger {
@@ -175,8 +196,97 @@ header{
     display: none;
 }
 
-/* MEDIA QUERY: Mobile (max-width: 900px) */
+/* Profile Dropdown Styles */
+.profile-dropdown-menu {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 220px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    padding: 10px 0;
+    z-index: 1001;
+    border: 1px solid rgba(0,0,0,0.05);
+    animation: fadeInDropdown 0.2s ease-out;
+}
+
+@keyframes fadeInDropdown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-header {
+    padding: 10px 20px;
+}
+
+.user-name {
+    margin: 0;
+    font-weight: 700;
+    color: #2c3e50;
+    font-size: 1rem;
+}
+
+.user-role {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    margin-top: 2px;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: #f0f0f0;
+    margin: 8px 0;
+}
+
+.dropdown-item {
+    display: flex !important; /* Override potential global 'a' styles */
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+    color: #34495e;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background: #f8f9fa;
+    color: #00bcd4;
+}
+
+.dropdown-item i {
+    width: 20px;
+    text-align: center;
+    color: #95a5a6;
+}
+
+.dropdown-item:hover i {
+    color: #00bcd4;
+}
+
+.dropdown-item.logout {
+    color: #e74c3c;
+}
+
+.dropdown-item.logout:hover {
+    background: #fff5f5;
+    color: #c0392b;
+}
+
+.dropdown-item.logout i {
+    color: #e74c3c;
+}
+
+.rotate-180 {
+    transform: rotate(180deg);
+}
+
+/* Ensure mobile menu still valid */
 @media (max-width: 900px) {
+    /* ... existing mobile styles ... */
+
     /* --- Premium Mobile Menu Design --- */
     
     .mobile-initial {
@@ -201,7 +311,7 @@ header{
         left: auto; /* Reset left */
         width: 70%; /* Sidebar width */
         max-width: 300px;
-        height: 100vh; /* Full height */
+        height: 100dvh; /* Full dynamic height */
         background: rgba(18, 18, 18, 0.98); /* Less transparent, more solid panel */
         backdrop-filter: blur(10px);
         flex-direction: column !important; /* Force Vertical Stack */
@@ -215,6 +325,7 @@ header{
         z-index: 999;
         box-shadow: -5px 0 25px rgba(0,0,0,0.5); /* Shadow on left edge */
         display: flex;
+        overflow-y: auto; /* Allow scrolling if height is too small */
     }
 
     #button.active {
@@ -277,27 +388,30 @@ header{
         flex-direction: column;
         align-items: center;
         width: 100%;
-        margin-top: 40px;
+        margin-top: auto; /* Push to the very bottom */
         padding-top: 30px;
+        padding-bottom: 40px; /* Add bottom spacing */
         border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     /* Logout Button - Mobile Premium Style */
-    .logout-btn {
+    .logout-btn.mobile-logout {
+        display: inline-block !important; /* Force display */
         font-size: 16px;
         padding: 12px 35px;
         border: 1px solid rgba(255, 255, 255, 0.3);
         border-radius: 30px;
-        background: transparent;
-        color: white;
+        background: rgba(255,255,255,0.05);
+        color: white !important; /* Force White Text */
         text-transform: uppercase;
         letter-spacing: 1px;
         font-weight: 600;
         transition: all 0.3s ease;
-        margin-top: 10px;
+        margin-top: 20px;
+        cursor: pointer;
     }
 
-    .logout-btn:hover {
+    .logout-btn.mobile-logout:hover {
         background: #DC2626; /* Red for Logout */
         border-color: #DC2626;
         box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
@@ -334,7 +448,13 @@ header{
 
     /* Ensure specific overrides for home page are respected or reset */
     .home-nav #button.active .a {
-        color: white; /* Keep white on mobile menu even for home page */
+        color: rgba(255, 255, 255, 0.9); /* Reset to gray-white */
         text-shadow: none;
+        background: transparent !important;
+    }
+
+    .home-nav #button.active .a.active {
+        color: #00bcd4; /* Active color */
+        background: transparent !important;
     }
 }

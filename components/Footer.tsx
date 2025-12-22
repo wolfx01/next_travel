@@ -44,7 +44,10 @@ export default function Footer() {
         </div>
         <div className="footer-section">
           <h4>Newsletter</h4>
-          <p>Subscribe to get travel updates</p>
+          <p className="newsletter-desc">
+            <i className="fas fa-paper-plane" style={{ marginRight: '10px', color: '#00bcd4' }}></i>
+            Subscribe to get travel updates
+          </p>
           <form className="newsletter-form">
             <input type="email" placeholder="Your email" required />
             <button type="submit">Subscribe</button>

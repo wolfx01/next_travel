@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
+import '@/app/styles/hero.css';
 
 export default function Countries() {
   const [countries, setCountries] = useState<any[]>([]);
@@ -65,33 +66,23 @@ export default function Countries() {
   };
 
   return (
-    <main style={{ marginTop: '0', paddingTop: '0' }}> 
-      <div className="countries-hero">
+    <main className="countries-main" style={{ marginTop: '0', paddingTop: '0' }}> 
+      <div className="premium-hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop')" }}>
         <div className="hero-overlay"></div>
-        <div className="countries-hero-content">
-            <h1>Explore Countries</h1>
-            <p>Discover exciting destinations and rich cultures across the globe.</p>
+        <div className="hero-content">
+            <h1 className="hero-title">Explore the World</h1>
+            <p className="hero-subtitle">Discover breathtaking destinations, vibrant cultures, and unforgettable adventures waiting for you.</p>
             
-            <div className="search-container" style={{ marginTop: '20px' }}>
+            <div className="hero-search-container">
                 <input 
                     type="text" 
-                    placeholder="Search countries..." 
+                    placeholder="Search for a country..." 
+                    className="hero-search-input"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    style={{
-                        padding: '12px 20px',
-                        fontSize: '1rem',
-                        borderRadius: '30px',
-                        border: 'none',
-                        width: '100%',
-                        maxWidth: '500px',
-                        boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
-                        outline: 'none'
-                    }}
                 />
             </div>
         </div>
-
       </div>
       <div className="countries-grid" style={{
         display: 'grid',
@@ -101,6 +92,18 @@ export default function Countries() {
         maxWidth: '1200px',
         margin: '0 auto'
       }}>
+        {loading && countries.length === 0 && Array.from({ length: 8 }).map((_, i) => (
+             <div key={i} className="country-card" style={{ height: '400px' }}>
+                 <div className="skeleton" style={{ width: '100%', height: '200px' }}></div>
+                 <div style={{ padding: '20px' }}>
+                     <div className="skeleton skeleton-text" style={{ width: '60%', height: '28px', marginBottom: '15px' }}></div>
+                     <div className="skeleton skeleton-text"></div>
+                     <div className="skeleton skeleton-text"></div>
+                     <div className="skeleton skeleton-text" style={{ width: '80%' }}></div>
+                 </div>
+             </div>
+        ))}
+
         {countries.map((country, idx) => {
             if (countries.length === idx + 1) {
                 return (

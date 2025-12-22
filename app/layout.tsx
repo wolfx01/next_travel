@@ -3,15 +3,17 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
-import "./globals.css";
+import "./styles/globals.css";
+import "./styles/home.css";
+import "./styles/Footer.css";
 import "./styles/countries.css";
 import "./styles/places.css";
 import "./styles/form.css";
-import "./styles/styhom.css";
 import "./styles/chat.css";
 import "./styles/Navbar.css";
 import "./styles/details.css";
 import "./styles/profile.css";
+import "./styles/social.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +42,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Use a client component wrapper or just check params if possible, 
+  // but since this is a Server Component layout, we can't use usePathname directly here nicely without making it client or using headers.
+  // Converting RootLayout to client is not ideal for metadata.
+  // Better approach: Make Footer a client component that checks pathname itself.
+  
   return (
     <html lang="en">
       <head>
@@ -51,9 +58,11 @@ export default function RootLayout({
       >
         <Navbar />
         {children}
-        <Footer />
+        <FooterWrapper />
         <Chatbot />
       </body>
     </html>
   );
 }
+
+import FooterWrapper from "@/components/FooterWrapper";

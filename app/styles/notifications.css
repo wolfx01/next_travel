@@ -1,0 +1,119 @@
+/* Notification Dropdown Styles */
+.notification-wrapper {
+    position: relative;
+    cursor: pointer;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.notification-icon {
+    position: relative;
+    color: #00bcd4 !important; /* Bright Blue */
+    transition: color 0.3s;
+}
+
+.notification-icon:hover {
+    color: #2980b9 !important; /* Darker Blue on Hover */
+}
+
+.notification-icon .badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #e74c3c;
+    color: white;
+    font-size: 0.7rem;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid white;
+}
+
+.notification-dropdown {
+    position: absolute;
+    top: 40px;
+    right: -10px;
+    width: 320px;
+    background: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    border-radius: 12px;
+    padding: 15px 0;
+    z-index: 1000;
+    border: 1px solid #eee;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.notification-dropdown h3 {
+    padding: 0 20px 10px;
+    margin: 0;
+    border-bottom: 1px solid #eee;
+    font-size: 1rem;
+    color: #2c3e50;
+}
+
+.notification-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    border-bottom: 1px solid #f9f9f9;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s;
+}
+
+.notification-item:hover {
+    background: #f8f9fa;
+}
+
+.notification-item.unread {
+    background: #f0f7ff;
+}
+
+.notification-item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+}
+
+.notif-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: #34495e;
+}
+
+.notif-content span {
+    font-size: 0.75rem;
+    color: #95a5a6;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background: #3498db;
+    border-radius: 50%;
+    margin-left: auto;
+}
+
+.no-notif {
+    text-align: center;
+    padding: 20px;
+    color: #95a5a6;
+    font-size: 0.9rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

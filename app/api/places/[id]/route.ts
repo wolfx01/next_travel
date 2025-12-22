@@ -101,8 +101,35 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     const { id: idStr } = await params;
     const id = parseInt(idStr);
     
-    // Find city by ID from the local JSON source
-    const city = processedCities.find((c: any) => c.id === id);
+    // Check Curated List
+    let city = processedCities.find((c: any) => c.id === id);
+
+    // If not found, check all-the-cities
+    if (!city) {
+      try {
+         // @ts-ignore
+         const allCities = require('all-the-cities');
+         // We might need to guess the index if the ID is purely based on array index from the other route?
+         // In /api/places, we did: id = city.cityId || city.id || index;
+         // But all-the-cities objects have 'cityId'.
+         
+         const found = allCities.find((c: any) => c.cityId === id || c.id === id);
+         
+         if (found) {
+            city = {
+                id: found.cityId || found.id,
+                name: found.name,
+                country: found.country,
+                population: found.population || 0,
+                loc: found.loc,
+                // Default image for non-curated
+                image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800' // Use high-res default
+            };
+         }
+      } catch (err) {
+         console.error("Failed to load all-the-cities in detail view:", err);
+      }
+    }
 
     if (!city) {
       return NextResponse.json({ error: "Place not found" }, { status: 404 });
