@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "next dev --webpack",
+    "build": "next build --no-lint",
     "start": "next start",
     "lint": "eslint"
   },
@@ -17,9 +17,9 @@
     "dotenv": "^17.2.3",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.0.1",
-    "next": "15.1.0",
-    "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "next": "^16.1.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -30,7 +30,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.0.10",
+    "eslint-config-next": "^16.1.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

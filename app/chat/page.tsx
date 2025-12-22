@@ -23,7 +23,9 @@ interface Conversation {
   unread: boolean;
 }
 
-export default function ChatPage() {
+import { Suspense } from 'react';
+
+function ChatContent() {
     const [currentUser, setCurrentUser] = useState<any>(null);
     const [conversations, setConversations] = useState<Conversation[]>([]);
     const [activeChat, setActiveChat] = useState<any>(null); // User object of active chat
@@ -231,5 +233,13 @@ export default function ChatPage() {
                 )}
             </div>
         </main>
+    );
+}
+
+export default function ChatPage() {
+    return (
+        <Suspense fallback={<div style={{ textAlign: 'center', padding: '50px' }}>Loading chat...</div>}>
+            <ChatContent />
+        </Suspense>
     );
 }
