@@ -1,9 +1,15 @@
 "use client";
 
 import Link from 'next/link';
-import '@/app/styles/planner.css'; // Ensure CSS is available if not globally loaded yet (though layout calls it mostly)
+import { usePathname } from 'next/navigation';
+import '@/app/styles/planner.css'; 
 
 export default function FloatingPlannerButton() {
+  const pathname = usePathname();
+
+  // Hide on Chat page to prevent overlap with input area
+  if (pathname === '/chat') return null;
+
   return (
     <Link href="/planner" className="floating-planner-btn" style={{ bottom: '90px' }} title="Plan Your Trip">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
