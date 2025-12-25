@@ -51,6 +51,8 @@ export async function GET() {
       visitedPlaces: user.visitedPlaces || [],
       reviewsCount,
       countriesCount,
+      followersCount: user.followers?.length || 0,
+      profileRatingAvg: user.profileRatingAvg || 0, // Return profile rating
       isAdmin: user.isAdmin || false
     };
     // console.log("Check Login returning:", userData); // Uncomment if needed

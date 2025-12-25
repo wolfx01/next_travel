@@ -20,7 +20,16 @@ const userSchema = new mongoose.Schema({
   },
   followers: { type: [String], default: [] },
   following: { type: [String], default: [] },
-  isAdmin: { type: Boolean, default: false }
+  isAdmin: { type: Boolean, default: false },
+  profileRatings: {
+      type: [{
+          raterId: String,
+          rating: Number
+      }],
+      default: []
+  },
+  profileRatingAvg: { type: Number, default: 0 },
+  profileRatingCount: { type: Number, default: 0 }
 });
 
 // Force schema refresh in dev if simple refresh needed
@@ -28,7 +37,7 @@ if (mongoose.models.User) {
     // Ideally we shouldn't delete models in production, but for dev hot-reload usually fine
     // Or check if paths exist.
     const paths = mongoose.models.User.schema.paths;
-    if (!paths.visitedPlaces || !paths.followers || !paths.currentLocation || !paths.visitedPlaces.schema.paths.countryName) {
+    if (!paths.visitedPlaces || !paths.followers || !paths.profileRatingAvg) {
         delete mongoose.models.User;
     }
 }

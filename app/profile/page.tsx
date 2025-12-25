@@ -15,6 +15,8 @@ interface UserData {
   savedPlacesCount?: number;
   reviewsCount?: number;
   countriesCount?: number;
+  followersCount?: number;
+  profileRatingAvg?: number; // Add interface field
   visitedPlaces?: any[]; // Array of visited places objects
   currentLocation?: string;
 }
@@ -52,6 +54,8 @@ export default function ProfilePage() {
             savedPlacesCount: data.savedPlacesCount,
             reviewsCount: data.reviewsCount,
             countriesCount: data.countriesCount,
+            followersCount: data.followersCount,
+            profileRatingAvg: data.profileRatingAvg, // Set from API
             visitedPlaces: data.visitedPlaces
           });
           if (data.avatarUrl) setAvatarImage(data.avatarUrl);
@@ -299,13 +303,20 @@ export default function ProfilePage() {
               </div>
               <div className="stat-card">
                   <div className="stat-icon"><i className="fas fa-star"></i></div>
-                  <h3>Reviews</h3>
-                  <div className="count">{user.reviewsCount || 0}</div>
+                  <h3>Reviews / Rating</h3>
+                  <div className="count">
+                      {user.profileRatingAvg ? (
+                          <span style={{ color: '#f1c40f' }}>★ {user.profileRatingAvg}</span>
+                      ) : "N/A"}
+                  </div>
+                  <small style={{ color: '#888', display: 'block', marginTop: '5px' }}>
+                      ({user.reviewsCount || 0} written)
+                  </small>
               </div>
               <div className="stat-card">
-                  <div className="stat-icon"><i className="fas fa-globe"></i></div>
-                  <h3>Countries</h3>
-                  <div className="count">{user.countriesCount || 0}</div>
+                  <div className="stat-icon"><i className="fas fa-users"></i></div>
+                  <h3>Followers</h3>
+                  <div className="count">{user.followersCount || 0}</div>
               </div>
           </div>
 

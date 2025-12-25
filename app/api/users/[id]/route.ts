@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import User from '@/lib/models/User';
+import Comment from '@/lib/models/Comment';
 
 export async function GET(
   request: Request,
@@ -14,13 +15,15 @@ export async function GET(
 
     await connectToDatabase();
     
-    // Select specific fields for public view to protect privacy (exclude email/password)
-    // Adding email now so user can edit their profile. Ideally should check if request is from owner.
-    const user = await User.findById(userId).select('userName avatarUrl coverUrl bio visitedPlaces savedPlaces followers following email');
+    // Select specific fields for public view
+    const user = await User.findById(userId).select('userName avatarUrl coverUrl bio visitedPlaces savedPlaces followers following email profileRatingAvg profileRatingCount isAdmin');
 
     if (!user) {
         return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
+
+    // Calculate Reviews Count
+    const reviewsCount = await Comment.countDocuments({ userId: user._id });
 
     return NextResponse.json({
         _id: user._id,
@@ -35,8 +38,11 @@ export async function GET(
             visitedPlaces: user.visitedPlaces?.length || 0,
             followers: user.followers?.length || 0,
             following: user.following?.length || 0,
-            followersList: user.followers // Expose list to check if following
-        }
+            followersList: user.followers
+        },
+        profileRatingAvg: user.profileRatingAvg || 0,
+        profileRatingCount: user.profileRatingCount || 0,
+        reviewsCount: reviewsCount
     });
 
   } catch (error) {

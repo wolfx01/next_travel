@@ -13,7 +13,7 @@ export default function Navbar() {
 
   useEffect(() => {
     checkLoginStatus();
-  }, []);
+  }, [pathname]);
 
   const checkLoginStatus = async () => {
     try {
@@ -139,7 +139,7 @@ export default function Navbar() {
                 <Link href="/login" className="alogin" id="log">Log in</Link>
               </div>
               <div className="logdiv" id="sin">
-                <Link href="/register" className="alogin" style={{ width: '100px' }}>Sign Up</Link>
+                <Link href="/register" className="alogin">Sign Up</Link>
               </div>
             </>
           ) : (

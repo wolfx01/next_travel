@@ -19,9 +19,8 @@ header{
 */
 
 /* Login/Register Buttons */
-#log {
-   color: blue;
-}
+/* Login/Register Buttons */
+/* Removed old #log color: blue */
 
 #login {
     display: flex;
@@ -29,28 +28,62 @@ header{
 }
 
 .alogin {
-  font-size: 20px;
-  font-family: monospace;
-  background-color: white;
-  border-radius: 40px;
-  width: 100px;
-  height: 45px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 30px;
+  padding: 10px 24px;
+  height: auto;
+  min-width: 100px;
   align-items: center;
   display: flex;
   justify-content: center;
   text-decoration: none;
-  color: blue;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
 }
+
+/* Log In Button - Ghost Style */
+#log {
+   color: white; /* Default to white for transparent nav */
+   background: rgba(255, 255, 255, 0.1);
+   border: 1px solid rgba(255, 255, 255, 0.3);
+   backdrop-filter: blur(4px);
+}
+
+#log:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Sign Up Button - Primary Gradient Style */
+#sin .alogin {
+    background: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 114, 255, 0.3);
+}
+
+#sin .alogin:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 114, 255, 0.5);
+    filter: brightness(1.1);
+}
+
+/* Adjustment for sticky header (white background) if we had one, 
+   but for now assuming transparent/dark theme for home.
+   We can force dark text for 'Log in' if on a light page? 
+   Currently global header is dark transparent. */
+
 
 .logdiv{
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
-    height: 40px;
-    width: 90px;
-    margin: 14px;
-    border: 2px ;
-    border-radius: 20px;
+    justify-content: center;
+    margin: 0 10px;
 }
 
 #logo{

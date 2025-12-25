@@ -14,6 +14,8 @@ export default function PublicProfilePage() {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [rating, setRating] = useState(0); // For submitting
+  const [hoverRating, setHoverRating] = useState(0);
 
   useEffect(() => {
     // Fetch Current User
@@ -40,6 +42,42 @@ export default function PublicProfilePage() {
         setLoading(false);
       });
   }, [userId]);
+
+  const handleRateUser = async (score: number) => {
+    if (!currentUser) {
+        alert("Please log in to rate users.");
+        return;
+    }
+    
+    setRating(score);
+
+    try {
+        const res = await fetch('/api/user/rate-profile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                targetUserId: userId,
+                raterId: currentUser._id,
+                rating: score
+            })
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            // Update local state to reflect new average
+            setUser((prev: any) => ({
+                ...prev,
+                profileRatingAvg: data.newAverage,
+                profileRatingCount: data.newCount
+            }));
+            alert("Rating submitted!");
+        } else {
+            alert("Failed to save rating");
+        }
+    } catch (e) {
+        console.error(e);
+    }
+  };
 
   if (loading) return <div className="loading-state">Loading Profile...</div>;
   if (error || !user) return <div className="error-state">{error || "User not found"}</div>;
@@ -83,7 +121,39 @@ export default function PublicProfilePage() {
                       )}
                   </div>
               </div>
-          </div>
+              </div>
+              
+              {/* Profile Rating UI */}
+              <div style={{ marginTop: '20px', padding: '15px', background: '#f8f9fa', borderRadius: '10px' }}>
+                  <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: '#555' }}>
+                      Profile Rating: <span style={{ color: '#f1c40f' }}>★ {user.profileRatingAvg || 0}</span> ({user.profileRatingCount || 0})
+                  </h4>
+                  
+                  {currentUser && currentUser._id !== user._id ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                        <span style={{ fontSize: '0.9rem' }}>Rate this traveler:</span>
+                        <div style={{ display: 'flex' }} onMouseLeave={() => setHoverRating(0)}>
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <span 
+                                    key={star}
+                                    style={{ 
+                                        cursor: 'pointer', 
+                                        fontSize: '1.5rem', 
+                                        color: star <= (hoverRating || rating) ? '#f1c40f' : '#ccc',
+                                        transition: 'color 0.2s'
+                                    }}
+                                    onMouseEnter={() => setHoverRating(star)}
+                                    onClick={() => handleRateUser(star)}
+                                >
+                                    ★
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                  ) : (
+                      currentUser && <p style={{ fontSize: '0.8rem', color: '#888' }}>This is your public profile.</p>
+                  )}
+              </div>
 
           <div className="profile-stats-grid">
               <div className="stat-card">
@@ -92,9 +162,16 @@ export default function PublicProfilePage() {
                   <div className="count">{user.stats?.savedPlaces || 0}</div>
               </div>
               <div className="stat-card">
-                  <div className="stat-icon"><i className="fas fa-globe-americas"></i></div>
-                  <h3>Visited</h3>
-                  <div className="count">{user.stats?.visitedPlaces || 0}</div>
+                  <div className="stat-icon"><i className="fas fa-star"></i></div>
+                  <h3>Reviews / Rating</h3>
+                  <div className="count">
+                      {user.profileRatingAvg ? (
+                          <span style={{ color: '#f1c40f' }}>★ {user.profileRatingAvg}</span>
+                      ) : "N/A"}
+                  </div>
+                  <small style={{ color: '#888', display: 'block', marginTop: '5px' }}>
+                      ({user.reviewsCount || 0} written)
+                  </small>
               </div>
               <div className="stat-card">
                   <div className="stat-icon"><i className="fas fa-users"></i></div>
