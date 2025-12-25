@@ -67,7 +67,7 @@ export default function Countries() {
 
   return (
     <main className="countries-main" style={{ marginTop: '0', paddingTop: '0' }}> 
-      <div className="premium-hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop')" }}>
+      <div className="premium-hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop" }}>
         <div className="hero-overlay"></div>
         <div className="hero-content">
             <h1 className="hero-title">Explore the World</h1>
