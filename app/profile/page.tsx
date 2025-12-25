@@ -14,6 +14,7 @@ interface UserData {
   bio?: string;
   savedPlacesCount?: number;
   visitedPlaces?: any[]; // Array of visited places objects
+  currentLocation?: string;
 }
 
 export default function ProfilePage() {
@@ -28,6 +29,8 @@ export default function ProfilePage() {
   // State for Bio Editing
   const [isEditingBio, setIsEditingBio] = useState(false);
   const [bioText, setBioText] = useState("Travel enthusiast exploring the world one city at a time.");
+  const [locationText, setLocationText] = useState("");
+  const [isEditingLocation, setIsEditingLocation] = useState(false);
 
   // Refs for file inputs
   const coverInputRef = useRef<HTMLInputElement>(null);
@@ -51,6 +54,7 @@ export default function ProfilePage() {
           if (data.coverUrl) setCoverImage(data.coverUrl);
           // Use nullish coalescing to allow empty strings but fall back to current/default if undefined
           if (data.bio !== undefined) setBioText(data.bio);
+          if (data.currentLocation) setLocationText(data.currentLocation);
         } else {
           router.push('/login');
         }
@@ -73,13 +77,31 @@ export default function ProfilePage() {
 
           if (res.ok) {
               setIsEditingBio(false);
-              // Optionally update local user object
           } else {
               alert("Failed to save bio");
           }
       } catch (err) {
           console.error("Error saving bio", err);
           alert("Error saving bio");
+      }
+  };
+
+  const handleSaveLocation = async () => {
+      try {
+          const res = await fetch('/api/user/update-profile', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ currentLocation: locationText })
+          });
+
+          if (res.ok) {
+              setIsEditingLocation(false);
+          } else {
+              alert("Failed to save location");
+          }
+      } catch (err) {
+          console.error("Error saving location", err);
+          alert("Error saving location");
       }
   };
 
@@ -209,6 +231,35 @@ export default function ProfilePage() {
                     <h1>{user.userName}</h1>
                   </div>
                   <p className="email"><i className="fas fa-envelope"></i> {user.email}</p>
+                  
+                   <div className="location-section" style={{ marginTop: '10px' }}>
+                    {isEditingLocation ? (
+                       <div className="bio-edit-container">
+                          <input 
+                              type="text"
+                              value={locationText} 
+                              onChange={(e) => setLocationText(e.target.value)}
+                              className="bio-input"
+                              placeholder="City or IATA code (e.g. NYC, LON)"
+                              style={{ width: '100%', padding: '8px', marginBottom: '8px' }}
+                          />
+                          <div className="bio-actions">
+                              <button onClick={handleSaveLocation} className="save-bio-btn">Save</button>
+                              <button onClick={() => setIsEditingLocation(false)} className="cancel-bio-btn">Cancel</button>
+                          </div>
+                       </div>
+                    ) : (
+                       <div className="bio-display">
+                           <p className="location" style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#666' }}>
+                                <i className="fas fa-map-marker-alt" style={{ color: '#e74c3c' }}></i> 
+                                {locationText || "Set your location"}
+                           </p>
+                           <button onClick={() => setIsEditingLocation(true)} className="edit-bio-btn" aria-label="Edit Location" style={{ marginLeft: '10px' }}>
+                               <i className="fas fa-pen"></i>
+                           </button>
+                       </div>
+                    )}
+                  </div>
                   
                   <div className="bio-section">
                     {isEditingBio ? (

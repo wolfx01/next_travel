@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   avatarUrl: { type: String },
   coverUrl: { type: String },
   bio: { type: String, default: "Travel enthusiast exploring the world one city at a time." },
+  currentLocation: { type: String, default: "" },
   savedPlaces: { type: [String], default: [] },
   visitedPlaces: { 
     type: [{
@@ -26,7 +27,7 @@ if (mongoose.models.User) {
     // Ideally we shouldn't delete models in production, but for dev hot-reload usually fine
     // Or check if paths exist.
     const paths = mongoose.models.User.schema.paths;
-    if (!paths.visitedPlaces || !paths.followers) {
+    if (!paths.visitedPlaces || !paths.followers || !paths.currentLocation) {
         delete mongoose.models.User;
     }
 }

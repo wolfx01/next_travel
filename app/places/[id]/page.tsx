@@ -14,6 +14,7 @@ export default function PlaceDetails() {
   const [commentText, setCommentText] = useState("");
   const [userName, setUserName] = useState("");
   const [userId, setUserId] = useState(""); // MongoID for API calls
+  const [userLocation, setUserLocation] = useState("");
   const [isVisited, setIsVisited] = useState(false);
   
   // Gallery
@@ -27,6 +28,7 @@ export default function PlaceDetails() {
             if (data.loggedIn) {
                 setUserName(data.userName);
                 setUserId(data.mongoId || data.userId || data._id);
+                if (data.currentLocation) setUserLocation(data.currentLocation);
                 // Check if already visited in local state or fetch from API (optional enhancement)
                 if (data.savedPlaces && data.savedPlaces.some((p: any) => p === id)) {
                     // Logic for saved places if needed
@@ -212,7 +214,7 @@ export default function PlaceDetails() {
         <section className="booking-section">
             <h2>Book Your Trip</h2>
             <div id="aviasales_container" style={{ minHeight: '100px', display: 'flex', justifyContent: 'center' }}>
-                 <AviasalesSearchWidget destination={place.name} />
+                 <AviasalesSearchWidget destination={place.name} defaultOrigin={userLocation} />
             </div>
         </section>
 
@@ -312,9 +314,13 @@ function DynamicMainImage({ city, country }: { city: string, country: string }) 
     return null;
 }
 
-function AviasalesSearchWidget({ destination }: { destination: string }) {
-    const [origin, setOrigin] = useState('LON');
+function AviasalesSearchWidget({ destination, defaultOrigin }: { destination: string, defaultOrigin?: string }) {
+    const [origin, setOrigin] = useState(defaultOrigin || 'LON');
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+
+    useEffect(() => {
+        if (defaultOrigin) setOrigin(defaultOrigin);
+    }, [defaultOrigin]);
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();

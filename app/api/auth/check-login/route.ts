@@ -24,7 +24,7 @@ export async function GET() {
     }
 
     // Mock response for debugging
-    return NextResponse.json({
+    const userData = {
       loggedIn: true,
       mongoId: user._id, // Return explicit ID for handy usage
       userId: user._id, // Also valid
@@ -33,10 +33,13 @@ export async function GET() {
       avatarUrl: user.avatarUrl,
       coverUrl: user.coverUrl,
       bio: user.bio,
+      currentLocation: user.currentLocation || "",
       savedPlaces: user.savedPlaces || [],
       visitedPlaces: user.visitedPlaces || [],
       isAdmin: user.isAdmin || false
-    });
+    };
+    // console.log("Check Login returning:", userData); // Uncomment if needed
+    return NextResponse.json(userData);
   } catch (err) {
     console.error('Check-Login API Error:', err);
     return NextResponse.json({ loggedIn: false });

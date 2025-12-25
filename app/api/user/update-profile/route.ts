@@ -13,7 +13,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { avatarUrl, coverUrl, bio } = await request.json();
+    const { avatarUrl, coverUrl, bio, currentLocation } = await request.json();
+    console.log("Update Profile Request:", { avatarUrl, coverUrl, bio, currentLocation });
+    
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string };
 
     await connectToDatabase();
@@ -22,6 +24,9 @@ export async function POST(request: Request) {
     if (avatarUrl) updateData.avatarUrl = avatarUrl;
     if (coverUrl) updateData.coverUrl = coverUrl;
     if (bio !== undefined) updateData.bio = bio;
+    if (currentLocation !== undefined) updateData.currentLocation = currentLocation;
+
+    console.log("Update Data Object:", updateData);
 
     const user = await User.findByIdAndUpdate(
         decoded.id, 
