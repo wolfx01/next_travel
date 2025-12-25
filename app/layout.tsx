@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
 import FloatingPlannerButton from "@/components/FloatingPlannerButton";
+import ScrollToTop from "@/components/ScrollToTop";
 import "./styles/globals.css";
 import "./styles/home.css";
 import "./styles/Footer.css";
@@ -63,6 +64,7 @@ export default function RootLayout({
         <FooterWrapper />
         <Chatbot />
         <FloatingPlannerButton />
+        <ScrollToTop />
       </body>
     </html>
   );
