@@ -12,6 +12,8 @@ export default function PlaceDetails() {
   const [comments, setComments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [commentText, setCommentText] = useState("");
+  // const [loading, setLoading] = useState(true); // REMOVED DUPLICATE
+  const [rating, setRating] = useState(5); // Default 5 stars
   const [userName, setUserName] = useState("");
   const [userId, setUserId] = useState(""); // MongoID for API calls
   const [userLocation, setUserLocation] = useState("");
@@ -99,13 +101,19 @@ export default function PlaceDetails() {
         body: JSON.stringify({
           placeId: id,
           userName: userName,
-          text: commentText
+          userId: userId, // Send userId for stats
+          text: commentText,
+          rating: rating,
+          placeName: place.name, // For updating aggregate
+          countryName: place.countryName // For updating aggregate
         })
       });
       
       if (res.ok) {
         setCommentText("");
+        setRating(5); // Reset
         fetchComments(); // Refresh comments
+        fetchPlaceDetails(); // Refresh stats (new average)
       } else {
         alert("Failed to post comment");
       }
@@ -127,21 +135,22 @@ export default function PlaceDetails() {
               body: JSON.stringify({
                   userId: userId,
                   placeId: id,
-                  placeName: place.name
+                  placeName: place.name,
+                  countryName: place.countryName // Send countryName for stats
               })
           });
 
           if (res.ok) {
-              setIsVisited(true);
-              alert("Marked as visited! Added to your Travel Journey.");
-          } else {
               const data = await res.json();
-              if (data.message === "Already visited") {
+              if (data.action === 'added') {
                   setIsVisited(true);
-                  alert("You have already visited this place!");
+                  alert("Marked as visited! Added to your Travel Journey.");
               } else {
-                  alert("Something went wrong");
+                  setIsVisited(false);
+                  alert("Removed from your Travel Journey.");
               }
+          } else {
+              alert("Something went wrong");
           }
       } catch (error) {
           console.error(error);
@@ -245,6 +254,23 @@ export default function PlaceDetails() {
             <div className="comment-form-container">
                 <h3>Leave a Comment</h3>
                 <form id="commentForm" onSubmit={handleCommentSubmit}>
+                    <div style={{ marginBottom: '10px' }}>
+                        <span style={{ marginRight: '10px', color: '#fff' }}>Your Rating:</span>
+                        {[1, 2, 3, 4, 5].map((star) => (
+                            <span 
+                                key={star} 
+                                onClick={() => setRating(star)}
+                                style={{ 
+                                    cursor: 'pointer', 
+                                    color: star <= rating ? '#f1c40f' : '#ccc', 
+                                    fontSize: '1.5rem',
+                                    marginRight: '5px'
+                                }}
+                            >
+                                ★
+                            </span>
+                        ))}
+                    </div>
                     <div className="input-wrapper">
                         <textarea 
                            id="commentText" 
@@ -269,6 +295,11 @@ export default function PlaceDetails() {
                              </div>
                              <div className="author-info">
                                  <h4>{comment.userName} <span className="verified-badge"><i className="fas fa-check-circle"></i></span></h4>
+                                 <div style={{ color: '#f1c40f', fontSize: '0.9rem' }}>
+                                     {Array.from({ length: 5 }).map((_, r) => (
+                                         <span key={r} style={{ color: r < (comment.rating || 5) ? '#f1c40f' : '#ddd' }}>★</span>
+                                     ))}
+                                 </div>
                                  <small>{new Date(comment.date).toLocaleDateString()}</small>
                              </div>
                          </div>

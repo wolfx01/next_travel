@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import User from '@/lib/models/User';
+import Comment from '@/lib/models/Comment';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
@@ -23,6 +24,17 @@ export async function GET() {
       return NextResponse.json({ loggedIn: false });
     }
 
+    // Calculate Stats
+    const reviewsCount = await Comment.countDocuments({ userId: user._id });
+    
+    // Unique countries count
+    const uniqueCountries = new Set();
+    console.log("DEBUG: visitedPlaces", JSON.stringify(user.visitedPlaces, null, 2));
+    user.visitedPlaces.forEach((p: any) => {
+        if (p.countryName) uniqueCountries.add(p.countryName);
+    });
+    const countriesCount = uniqueCountries.size;
+
     // Mock response for debugging
     const userData = {
       loggedIn: true,
@@ -35,7 +47,10 @@ export async function GET() {
       bio: user.bio,
       currentLocation: user.currentLocation || "",
       savedPlaces: user.savedPlaces || [],
+      savedPlacesCount: user.savedPlaces ? user.savedPlaces.length : 0,
       visitedPlaces: user.visitedPlaces || [],
+      reviewsCount,
+      countriesCount,
       isAdmin: user.isAdmin || false
     };
     // console.log("Check Login returning:", userData); // Uncomment if needed

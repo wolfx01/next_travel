@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import curatedPlaces from '@/lib/data/places.json';
+import connectToDatabase from '@/lib/db';
+import PlaceDetails from '@/lib/models/PlaceDetails';
 
 // Lazy initialization variables
 let isInitialized = false;
@@ -145,11 +147,21 @@ export async function GET(request: Request) {
     const startIndex = (page - 1) * limit;
     const paginatedCities = resultList.slice(startIndex, startIndex + limit);
 
+    // --- Fetch Dynamic Ratings from DB ---
+    await connectToDatabase();
+    const cityNames = paginatedCities.map((c: any) => c.name);
+    // Fetch details for these cities to get real ratings
+    const dbDetails = await PlaceDetails.find({ placeName: { $in: cityNames } });
+
+    const detailsMap = new Map();
+    dbDetails.forEach((d: any) => detailsMap.set(d.placeName, d));
+
     // --- Formatting Response ---
     const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
 
     const places = paginatedCities.map((city: any) => {
       const curated = city.curatedData;
+      const dbInfo = detailsMap.get(city.name);
       
       // Resolve full country name for display
       let countryDisplay = city.country;
@@ -168,7 +180,8 @@ export async function GET(request: Request) {
         name: city.name,
         country: countryDisplay, // Send Full Name to Frontend
         population: city.population,
-        rating: curated ? curated.rating : getStableRating(city.name),
+        rating: dbInfo && dbInfo.averageRating ? dbInfo.averageRating : (curated ? curated.rating : getStableRating(city.name)),
+        reviewCount: dbInfo ? dbInfo.reviewCount : 0,
         image: curated?.image || 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400',
         description: curated
           ? curated.description

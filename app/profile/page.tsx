@@ -13,6 +13,8 @@ interface UserData {
   email: string;
   bio?: string;
   savedPlacesCount?: number;
+  reviewsCount?: number;
+  countriesCount?: number;
   visitedPlaces?: any[]; // Array of visited places objects
   currentLocation?: string;
 }
@@ -48,6 +50,8 @@ export default function ProfilePage() {
             email: data.email, 
             bio: data.bio, 
             savedPlacesCount: data.savedPlacesCount,
+            reviewsCount: data.reviewsCount,
+            countriesCount: data.countriesCount,
             visitedPlaces: data.visitedPlaces
           });
           if (data.avatarUrl) setAvatarImage(data.avatarUrl);
@@ -296,12 +300,12 @@ export default function ProfilePage() {
               <div className="stat-card">
                   <div className="stat-icon"><i className="fas fa-star"></i></div>
                   <h3>Reviews</h3>
-                  <div className="count">0</div>
+                  <div className="count">{user.reviewsCount || 0}</div>
               </div>
               <div className="stat-card">
                   <div className="stat-icon"><i className="fas fa-globe"></i></div>
                   <h3>Countries</h3>
-                  <div className="count">0</div>
+                  <div className="count">{user.countriesCount || 0}</div>
               </div>
           </div>
 

@@ -5,7 +5,7 @@ import User from '@/lib/models/User';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { userId, placeId, placeName } = body;
+    const { userId, placeId, placeName, countryName } = body;
 
     if (!userId || !placeId) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -19,22 +19,30 @@ export async function POST(request: Request) {
     }
 
     // Check if place is already visited
-    const alreadyVisited = user.visitedPlaces.some((p: any) => p.placeId === placeId);
+    const existingIndex = user.visitedPlaces.findIndex((p: any) => p.placeId === placeId);
+    let action = "added";
 
-    if (alreadyVisited) {
-       // Optionally remove if it's a toggle, or just return success
-       return NextResponse.json({ message: "Already visited" }, { status: 200 });
+    if (existingIndex > -1) {
+       // Remove
+       user.visitedPlaces.splice(existingIndex, 1);
+       action = "removed";
+    } else {
+       // Add
+       user.visitedPlaces.push({
+         placeId,
+         placeName: placeName || "Unknown Place",
+         countryName: countryName || "Unknown Country",
+         dateVisited: new Date()
+       });
     }
-
-    user.visitedPlaces.push({
-      placeId,
-      placeName: placeName || "Unknown Place",
-      dateVisited: new Date()
-    });
 
     await user.save();
 
-    return NextResponse.json({ message: "Added to visited places", visitedPlaces: user.visitedPlaces }, { status: 200 });
+    return NextResponse.json({ 
+        message: action === "added" ? "Added to visited places" : "Removed from visited places", 
+        action: action,
+        visitedPlaces: user.visitedPlaces 
+    }, { status: 200 });
 
   } catch (error) {
     console.error("Error adding visited place:", error);

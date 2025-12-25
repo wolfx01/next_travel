@@ -6,6 +6,8 @@ const placeDetailsSchema = new mongoose.Schema({
   description: { type: String },
   currency: { type: String },
   language: { type: String },
+  averageRating: { type: Number, default: 0 },
+  reviewCount: { type: Number, default: 0 },
   lastUpdated: { type: Date, default: Date.now },
 });
 
@@ -18,10 +20,19 @@ export interface IPlaceDetails extends mongoose.Document {
   description?: string;
   currency?: string;
   language?: string;
+  averageRating?: number;
+  reviewCount?: number;
   lastUpdated: Date;
 }
 
 const PlaceDetails: mongoose.Model<IPlaceDetails> =
   mongoose.models.PlaceDetails || mongoose.model<IPlaceDetails>("PlaceDetails", placeDetailsSchema);
+
+if (mongoose.models.PlaceDetails) {
+  const paths = mongoose.models.PlaceDetails.schema.paths;
+  if (!paths.averageRating || !paths.reviewCount) {
+      delete mongoose.models.PlaceDetails;
+  }
+}
 
 export default PlaceDetails;

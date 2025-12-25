@@ -161,6 +161,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     const hasError = 'error' in geminiDetails;
     const safeDetails = !hasError ? (geminiDetails as GeminiDetails) : null;
 
+    // Fetch Rating from DB
+    const dbDoc = await PlaceDetails.findOne({ placeName: city.name, country: countryName });
+
     const placeDetails = {
       id: city.id,
       name: city.name,
@@ -168,11 +171,12 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
       countryName: countryName,
       city: city.name, // Ensure city field exists for frontend
       population: city.population,
-      rating: city.rating || getStableRating(city.name),
+      rating: dbDoc && dbDoc.averageRating ? dbDoc.averageRating : (city.rating || getStableRating(city.name)),
       image: city.image || 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400',
       description: safeDetails?.description || city.description || `A beautiful city in ${countryName} with a population of ${city.population.toLocaleString()}.`,
       currency: safeDetails?.currency || "Unknown",
-      language: safeDetails?.language || "Unknown"
+      language: safeDetails?.language || "Unknown",
+      reviewCount: dbDoc ? dbDoc.reviewCount : 0
     };
 
     return NextResponse.json(placeDetails);
