@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
@@ -61,6 +62,7 @@ export default function RootLayout({
       >
         <Navbar />
         {children}
+        <Analytics />
         <FooterWrapper />
         <Chatbot />
         <FloatingPlannerButton />
