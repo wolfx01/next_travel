@@ -65,7 +65,7 @@
 
 #chat-window {
   position: fixed;
-  bottom: 110px;
+  bottom: 10px;
   right: 20px;
   width: 340px;
   height: 480px;
