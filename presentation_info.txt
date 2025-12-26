@@ -1,0 +1,63 @@
+===========================================================
+PROJECT PRESENTATION: TRAVEL - GLOBAL TRAVEL COMPANION
+===========================================================
+
+1. PROJECT OVERVIEW
+-------------------
+• Name: Travel
+• Slogan: "Discover the Best Destinations in the World"
+• Purpose: A smart, all-in-one global travel platform designed to help explorers discover destinations worldwide, plan trips using AI, and connect with a global community of travelers.
+
+2. PROBLEM & SOLUTION
+---------------------
+• Problem: Travelers often juggle multiple apps to find international recommendations, plan complex cross-border itineraries, and connect with like-minded explorers.
+• Solution: "Travel" provides a unified platform for discovering countries and cities globally, generating AI-powered itineraries for any destination, and building a worldwide social network.
+
+3. KEY FEATURES
+---------------
+A. Global Discovery
+   • World Map & Countries: Explore destinations across different continents (e.g., France, Japan, Brazil, Morocco).
+   • Places Gallery: Filter by Country, City, or Category (Beach, Cultural, Mountain, Historical).
+   • Smart Search: Instantly find countries, cities, specific attractions, or other travelers.
+   • Rich details: Comprehensive information, weather updates, and maps for locations worldwide.
+
+B. AI Integration (Gemini Powered)
+   • AI Trip Planner: Generates personalized, day-by-day itineraries for ANY international destination based on user preferences.
+   • Dynamic Descriptions: AI-generated insights for places to ensure up-to-date and engaging content.
+
+C. Social & Community
+   • Global Profile: Customizable profiles to showcase your international travel history.
+   • Social Stats: Track "Saved Places", "Followers", and "Reviews Written".
+   • Profile Rating System: A trust-building system where travelers rate each other (1-5 stars).
+   • Activity Feed: See where travelers from around the world are visiting.
+   • Real-time Chat: Connect with travelers from different cultures and countries.
+   • Follow System: Build your global network.
+
+D. Booking & Tools
+   • Aviasales Integration: Built-in flight booking widget for international flights.
+   • Authentication: Secure Login/Register with a premium, user-friendly interface.
+
+4. TECHNOLOGY STACK
+-------------------
+• Frontend: Next.js 15 (App Router), React, Vanilla CSS (Premium Custom Styles).
+• Backend: Next.js API Routes, Node.js.
+• Database: MongoDB (via Mongoose).
+• AI Model: Google Gemini.
+• Authentication: Custom JWT Auth.
+
+5. DEMO HIGHLIGHTS (What to show during presentation)
+----------------------------------------------------
+1. Start at the **Home Page**: Show the "Travel" branding and the global search bar.
+2. Go to **Countries**: Show the list of different countries available to explore.
+3. Go to **Places**: Demonstrate filtering by a specific Country (e.g., filter by "France" or "Japan") to show the global scope.
+4. Open a **Place Details** page: Show the details and the flight booking widget.
+5. Go to **Planner**: Generate a trip to an international city (e.g., "Paris" or "Tokyo") to prove the AI's global capability.
+6. Show **Social Features**:
+   - Go to a User Profile.
+   - Show the **"Rate this User"** feature.
+   - Show the **"Followers"** count.
+7. Open **Chat**: Show the messaging interface usage.
+
+6. CONCLUSION
+-------------
+"Travel" is the ultimate companion for the modern globetrotter, combining the power of AI with a social community to make exploring the world accessible and exciting.

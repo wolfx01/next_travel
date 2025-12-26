@@ -130,7 +130,14 @@ export default function Navbar() {
         </div>
       </div>
 
-      <div className="nav-controls">
+      <div className="nav-controls" style={{ position: 'relative' }}>
+        {/* Notification Icon (Shared) */}
+        {user && (
+            <div style={{ marginRight: '10px' }}>
+                <NotificationDropdown userId={user._id} />
+            </div>
+        )}
+
         {/* Desktop Auth (Hidden on Mobile) */}
         <div className="desktop-auth" id="login">
           {!user ? (
@@ -144,8 +151,7 @@ export default function Navbar() {
             </>
           ) : (
             <div className="logdiv" id="userInitial" style={{ display: 'flex', alignItems: 'center', gap: '20px', position: 'relative' }}>
-              {/* Notification Dropdown */}
-              <NotificationDropdown userId={user._id} />
+
 
               {/* Profile Dropdown Trigger */}
               <div 
@@ -157,26 +163,6 @@ export default function Navbar() {
                 <i className={`fas fa-chevron-down ${isProfileMenuOpen ? 'rotate-180' : ''}`} style={{ fontSize: '0.8rem', color: '#333', transition: 'transform 0.2s' }}></i>
               </div>
 
-              {/* Dropdown Menu */}
-              {isProfileMenuOpen && (
-                <div className="profile-dropdown-menu">
-                    <div className="dropdown-header">
-                        <p className="user-name">{user.name}</p>
-                        <p className="user-role">{user.isAdmin ? 'Administrator' : 'Explorer'}</p>
-                    </div>
-                    <div className="dropdown-divider"></div>
-                    <Link href="/profile" className="dropdown-item" onClick={() => setIsProfileMenuOpen(false)}>
-                        <i className="fas fa-user"></i> My Profile
-                    </Link>
-                    <Link href="/settings" className="dropdown-item" onClick={() => setIsProfileMenuOpen(false)}>
-                        <i className="fas fa-cog"></i> Settings
-                    </Link>
-                    <div className="dropdown-divider"></div>
-                    <a href="#" className="dropdown-item logout" onClick={handleLogout}>
-                        <i className="fas fa-sign-out-alt"></i> Logout
-                    </a>
-                </div>
-              )}
             </div>
           )}
         </div>
@@ -184,9 +170,30 @@ export default function Navbar() {
         {/* Mobile Initial (Visible on Mobile Only) */}
         {user && (
             <div className="mobile-initial">
-                <Link href="/profile" style={{ textDecoration: 'none' }}>
+                <div onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)} style={{ cursor: 'pointer' }}>
                     <span className="initial-circle">{user.initial}</span>
+                </div>
+            </div>
+        )}
+
+        {/* Shared Profile Dropdown Menu */}
+        {isProfileMenuOpen && user && (
+            <div className="profile-dropdown-menu">
+                <div className="dropdown-header">
+                    <p className="user-name">{user.name}</p>
+                    <p className="user-role">{user.isAdmin ? 'Administrator' : 'Explorer'}</p>
+                </div>
+                <div className="dropdown-divider"></div>
+                <Link href="/profile" className="dropdown-item" onClick={() => setIsProfileMenuOpen(false)}>
+                    <i className="fas fa-user"></i> My Profile
                 </Link>
+                <Link href="/settings" className="dropdown-item" onClick={() => setIsProfileMenuOpen(false)}>
+                    <i className="fas fa-cog"></i> Settings
+                </Link>
+                <div className="dropdown-divider"></div>
+                <a href="#" className="dropdown-item logout" onClick={handleLogout}>
+                    <i className="fas fa-sign-out-alt"></i> Logout
+                </a>
             </div>
         )}
 
