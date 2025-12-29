@@ -132,6 +132,17 @@ function PlacesContent() {
         <div className="hero-content">
             <h1 className="hero-title">{countryFilter ? `Treasures of ${countryFilter}` : 'Discover Hidden Gems'}</h1>
             <p className="hero-subtitle">From bustling cities to serene landscapes, find the perfect place for your next journey.</p>
+            
+            <div className="hero-search-container" style={{ margin: '0 auto' }}>
+                <i className="fas fa-search" style={{ color: 'white', alignSelf: 'center', marginLeft: '20px', fontSize: '1.2rem' }}></i>
+                <input 
+                    type="text" 
+                    className="hero-search-input"
+                    placeholder="Search for a city or country..." 
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
+            </div>
         </div>
       </div>
 
@@ -142,15 +153,6 @@ function PlacesContent() {
         marginBottom: '30px',
         flexWrap: 'wrap'
       }}>
-        <div className="search-box">
-          <input 
-            type="text" 
-            placeholder="Search places..." 
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ddd', width: '300px' }}
-          />
-        </div>
         <div className="sort-box">
           <select 
             value={sort} 
