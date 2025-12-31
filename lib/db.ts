@@ -11,10 +11,10 @@ declare global {
   var mongoose: { conn: null | typeof import('mongoose'); promise: null | Promise<typeof import('mongoose')> } | undefined;
 }
 
-let cached = global.mongoose;
+let cached = global.mongoose || { conn: null, promise: null };
 
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+if (!global.mongoose) {
+  global.mongoose = cached;
 }
 
 async function connectToDatabase() {
