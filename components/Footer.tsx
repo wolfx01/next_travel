@@ -39,7 +39,7 @@ export default function Footer() {
           <div className="contact-info">
             <p><i className="fas fa-envelope"></i>itsbilalchouichou@mail.com</p>
             <p><i className="fas fa-phone"></i> +212 658013891</p>
-            <p><i className="fas fa-map-marker-alt"></i> Morocco</p>
+            <p><i className="fas fa-map-marker-alt"></i> Worldwide</p>
           </div>
         </div>
         <div className="footer-section">

@@ -1,63 +1,63 @@
 ===========================================================
-PROJECT PRESENTATION: TRAVEL - GLOBAL TRAVEL COMPANION
+PRÉSENTATION DU PROJET : TRAVEL - COMPAGNON DE VOYAGE GLOBAL
 ===========================================================
 
-1. PROJECT OVERVIEW
+1. APERÇU DU PROJET
 -------------------
-• Name: Travel
-• Slogan: "Discover the Best Destinations in the World"
-• Purpose: A smart, all-in-one global travel platform designed to help explorers discover destinations worldwide, plan trips using AI, and connect with a global community of travelers.
+• Nom : Travel
+• Slogan : "Découvrez les Meilleures Destinations du Monde"
+• Objectif : Une plateforme de voyage intelligente et tout-en-un conçue pour aider les explorateurs à découvrir des destinations dans le monde entier, planifier des voyages grâce à l'IA et se connecter avec une communauté mondiale de voyageurs.
 
-2. PROBLEM & SOLUTION
----------------------
-• Problem: Travelers often juggle multiple apps to find international recommendations, plan complex cross-border itineraries, and connect with like-minded explorers.
-• Solution: "Travel" provides a unified platform for discovering countries and cities globally, generating AI-powered itineraries for any destination, and building a worldwide social network.
+2. PROBLÈME ET SOLUTION
+-----------------------
+• Problème : Les voyageurs doivent souvent jongler avec plusieurs applications pour trouver des recommandations internationales, planifier des itinéraires complexes et se connecter avec d'autres explorateurs.
+• Solution : "Travel" offre une plateforme unifiée pour découvrir des pays et des villes, générer des itinéraires par IA pour n'importe quelle destination et construire un réseau social mondial.
 
-3. KEY FEATURES
----------------
-A. Global Discovery
-   • World Map & Countries: Explore destinations across different continents (e.g., France, Japan, Brazil, Morocco).
-   • Places Gallery: Filter by Country, City, or Category (Beach, Cultural, Mountain, Historical).
-   • Smart Search: Instantly find countries, cities, specific attractions, or other travelers.
-   • Rich details: Comprehensive information, weather updates, and maps for locations worldwide.
+3. FONCTIONNALITÉS CLÉS
+-----------------------
+A. Découverte Globale
+   • Exploration des Pays : Découvrez des destinations sur différents continents (ex. France, Japon, Brésil, Maroc).
+   • Galerie des Lieux : Filtrez par pays, ville ou catégorie (Plage, Culturel, Montagne, Historique).
+   • Recherche Intelligente : Trouvez instantanément des pays, des villes, des attractions spécifiques ou d'autres voyageurs.
+   • Détails Riches : Informations complètes, prévisions météo et localisations pour des lieux du monde entier.
 
-B. AI Integration (Gemini Powered)
-   • AI Trip Planner: Generates personalized, day-by-day itineraries for ANY international destination based on user preferences.
-   • Dynamic Descriptions: AI-generated insights for places to ensure up-to-date and engaging content.
+B. Intégration IA (Propulsé par Gemini)
+   • Planificateur de Voyage IA : Génère des itinéraires personnalisés jour par jour pour TOUTE destination internationale en fonction des préférences de l'utilisateur.
+   • Descriptions Dynamiques : Aperçus générés par l'IA pour les lieux afin de garantir un contenu attrayant et à jour.
 
-C. Social & Community
-   • Global Profile: Customizable profiles to showcase your international travel history.
-   • Social Stats: Track "Saved Places", "Followers", and "Reviews Written".
-   • Profile Rating System: A trust-building system where travelers rate each other (1-5 stars).
-   • Activity Feed: See where travelers from around the world are visiting.
-   • Real-time Chat: Connect with travelers from different cultures and countries.
-   • Follow System: Build your global network.
+C. Social et Communauté
+   • Profil Global : Profils personnalisables pour présenter votre historique de voyage.
+   • Statistiques Sociales : Suivez vos "Lieux Enregistrés", "Abonnés" et "Avis Rédigés".
+   • Système de Notation : Un système de confiance où les voyageurs se notent entre eux (1 à 5 étoiles).
+   • Flux d'Activité : Voyez ce que les voyageurs du monde entier visitent.
+   • Chat en Temps Réel : Connectez-vous avec des voyageurs de différentes cultures et pays.
+   • Système d'Abonnement : Développez votre réseau mondial.
 
-D. Booking & Tools
-   • Aviasales Integration: Built-in flight booking widget for international flights.
-   • Authentication: Secure Login/Register with a premium, user-friendly interface.
+D. Réservation et Outils
+   • Intégration Aviasales : Widget de réservation de vols intégré pour les vols internationaux.
+   • Authentification : Connexion/Inscription sécurisée avec une interface utilisateur premium.
 
-4. TECHNOLOGY STACK
--------------------
-• Frontend: Next.js 15 (App Router), React, Vanilla CSS (Premium Custom Styles).
-• Backend: Next.js API Routes, Node.js.
-• Database: MongoDB (via Mongoose).
-• AI Model: Google Gemini.
-• Authentication: Custom JWT Auth.
+4. STACK TECHNOLOGIQUE
+----------------------
+• Frontend : Next.js 15 (App Router), React, Vanilla CSS (Styles Personnalisés Premium).
+• Backend : Next.js API Routes, Node.js.
+• Base de données : MongoDB (via Mongoose).
+• Modèle IA : Google Gemini.
+• Authentification : Auth JWT Personnalisée.
 
-5. DEMO HIGHLIGHTS (What to show during presentation)
-----------------------------------------------------
-1. Start at the **Home Page**: Show the "Travel" branding and the global search bar.
-2. Go to **Countries**: Show the list of different countries available to explore.
-3. Go to **Places**: Demonstrate filtering by a specific Country (e.g., filter by "France" or "Japan") to show the global scope.
-4. Open a **Place Details** page: Show the details and the flight booking widget.
-5. Go to **Planner**: Generate a trip to an international city (e.g., "Paris" or "Tokyo") to prove the AI's global capability.
-6. Show **Social Features**:
-   - Go to a User Profile.
-   - Show the **"Rate this User"** feature.
-   - Show the **"Followers"** count.
-7. Open **Chat**: Show the messaging interface usage.
+5. POINTS FORTS DE LA DÉMO (Ce qu'il faut montrer pendant la présentation)
+-------------------------------------------------------------------------
+1. Commencer à la **Page d'Accueil** : Montrer la marque "Travel" et la barre de recherche globale.
+2. Aller à **Pays** : Montrer la liste des différents pays disponibles à explorer.
+3. Aller à **Lieux** : Démontrer le filtrage par un pays spécifique (ex. filtrer par "France" ou "Japon") pour montrer la portée mondiale.
+4. Ouvrir une page **Détails du Lieu** : Montrer les détails et le widget de réservation de vols.
+5. Aller au **Planificateur** : Générer un voyage pour une ville internationale (ex. "Paris" ou "Tokyo") pour prouver la capacité mondiale de l'IA.
+6. Montrer les **Fonctionnalités Sociales** :
+   - Aller sur un Profil Utilisateur.
+   - Montrer la fonctionnalité **"Noter cet Utilisateur"**.
+   - Montrer le nombre d'**"Abonnés"**.
+7. Ouvrir le **Chat** : Montrer l'utilisation de l'interface de messagerie.
 
 6. CONCLUSION
 -------------
-"Travel" is the ultimate companion for the modern globetrotter, combining the power of AI with a social community to make exploring the world accessible and exciting.
+"Travel" est le compagnon ultime du globe-trotteur moderne, combinant la puissance de l'IA avec une communauté sociale pour rendre l'exploration du monde accessible et passionnante.

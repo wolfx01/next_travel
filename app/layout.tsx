@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
 import FloatingPlannerButton from "@/components/FloatingPlannerButton";
+import FloatingMapButton from "@/components/FloatingMapButton";
 import ScrollToTop from "@/components/ScrollToTop";
 import "./styles/globals.css";
 import "./styles/home.css";
@@ -29,9 +30,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Travel - Discover the Best Destinations in Morocco',
+  title: 'Travel - Discover the Best Destinations in world',
   description: 'Your smart guide to travel and explore tourist attractions using AI.',
-  keywords: 'travel, tourism, Morocco, destinations, AI',
+  keywords: 'travel, tourism, explore, destinations, AI',
 };
 
 export const viewport: Viewport = {
@@ -65,6 +66,7 @@ export default function RootLayout({
         <Analytics />
         <FooterWrapper />
         <Chatbot />
+        <FloatingMapButton />
         <FloatingPlannerButton />
         <ScrollToTop />
       </body>
