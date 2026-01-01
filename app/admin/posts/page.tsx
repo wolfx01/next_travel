@@ -9,10 +9,8 @@ interface Post {
     content: string;
     mediaUrl?: string;
     createdAt: string;
-    userId: {
-        userName: string;
-        avatarUrl?: string;
-    };
+    userName: string; // From Post model directly
+    userAvatar?: string;
     likesCount: number;
     commentsCount: number;
 }
@@ -98,7 +96,7 @@ export default function AdminPostsPage() {
                             <tr key={post._id}>
                                 <td>
                                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                                        {post.userId?.userName || 'Unknown'}
+                                        {post.userName || 'Unknown'}
                                     </div>
                                 </td>
                                 <td>

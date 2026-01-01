@@ -11,7 +11,6 @@ export async function GET(req: Request) {
         await connectToDatabase();
         
         const posts = await Post.find({})
-            .populate('userId', 'userName avatarUrl')
             .sort({ createdAt: -1 });
 
         return NextResponse.json(posts);
