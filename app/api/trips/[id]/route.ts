@@ -20,13 +20,15 @@ async function getUserIdFromToken() {
     }
 }
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const userId = await getUserIdFromToken();
         if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+        const { id } = await params;
+
         await connectToDatabase();
-        const trip = await Trip.findOne({ _id: params.id, userId });
+        const trip = await Trip.findOne({ _id: id, userId });
 
         if (!trip) {
             return NextResponse.json({ error: "Trip not found" }, { status: 404 });
@@ -38,16 +40,17 @@ export async function GET(request: Request, { params }: { params: { id: string }
     }
 }
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const userId = await getUserIdFromToken();
         if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+        const { id } = await params;
         const body = await request.json();
         
         await connectToDatabase();
         const updatedTrip = await Trip.findOneAndUpdate(
-            { _id: params.id, userId },
+            { _id: id, userId },
             { $set: body },
             { new: true }
         );
@@ -62,13 +65,15 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     }
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const userId = await getUserIdFromToken();
         if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+        const { id } = await params;
+
         await connectToDatabase();
-        const deletedTrip = await Trip.findOneAndDelete({ _id: params.id, userId });
+        const deletedTrip = await Trip.findOneAndDelete({ _id: id, userId });
 
         if (!deletedTrip) {
             return NextResponse.json({ error: "Trip not found" }, { status: 404 });
