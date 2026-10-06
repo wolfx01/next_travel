@@ -1,5 +1,6 @@
 "use client";
 
+import TravelImage from '@/components/TravelImage';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import '@/app/styles/profile.css';
@@ -95,7 +96,7 @@ export default function PublicProfilePage() {
           <div className="profile-header-card">
               <div className="avatar-wrapper">
                   <div className="profile-avatar-large">
-                      <img src={user.avatarUrl || '/images/default_avatar.png'} alt="Profile" className="avatar-img" />
+                      <TravelImage src={user.avatarUrl || '/images/default_avatar.png'} alt="Profile" className="avatar-img" />
                   </div>
               </div>
               

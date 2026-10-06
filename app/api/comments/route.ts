@@ -1,3 +1,5 @@
+import User from '@/lib/models/User';
+import { requireSession } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import Comment from '@/lib/models/Comment';
@@ -5,9 +7,15 @@ import PlaceDetails from '@/lib/models/PlaceDetails';
 
 export async function POST(request: Request) {
   try {
-    const { placeId, userName, text, userId, rating, countryName, placeName } = await request.json();
+        const session = await requireSession();
+        if (session.error) return session.error;
+        const userId = session.userId;
+
+    const { placeId, text, rating, countryName, placeName } = await request.json();
+    const userName = (await User.findById(userId).select("userName")).userName;
     
-    if (!placeId || !userName || !text) {
+    if (rating !== undefined && rating !== null && rating !== "" && (!Number.isInteger(Number(rating)) || Number(rating) < 1 || Number(rating) > 5)) return NextResponse.json({ error: "Invalid rating" }, { status: 400 });
+    if (!placeId || !userName || typeof text !== "string" || !text.trim() || text.length > 5000) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
@@ -49,7 +57,7 @@ export async function POST(request: Request) {
 
   } catch (error: any) {
     console.error("Error saving comment:", error);
-    return NextResponse.json({ error: `Failed to save comment: ${error.message}` }, { status: 500 });
+    return NextResponse.json({ error: "Failed to save comment" }, { status: 500 });
   }
 }
 

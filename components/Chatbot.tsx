@@ -1,6 +1,8 @@
 "use client";
 
+import TravelImage from '@/components/TravelImage';
 import { useState, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import '@/app/styles/chatbot.css';
 
 type Message = {
@@ -9,6 +11,7 @@ type Message = {
 };
 
 export default function Chatbot() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -79,6 +82,8 @@ export default function Chatbot() {
     }
   };
 
+  if (['/login', '/register', '/settings', '/chat'].includes(pathname) || pathname.startsWith('/admin')) return null;
+
   return (
     <>
       <div id="chat-icon" onClick={() => setIsOpen(true)} style={{ display: isOpen ? 'none' : 'flex' }}>
@@ -95,7 +100,7 @@ export default function Chatbot() {
         
         <div id="chatbox" ref={chatboxRef}>
             {messages.map((msg, idx) => (
-                <p key={idx} className={msg.className} dangerouslySetInnerHTML={{ __html: msg.text.replace(/\n/g, "<br>") }}></p>
+                <p key={idx} className={msg.className} style={{ whiteSpace: 'pre-wrap' }}>{msg.text}</p>
             ))}
         </div>
         
@@ -109,7 +114,7 @@ export default function Chatbot() {
             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
           />
           <button id="sendBtn" onClick={handleSend}>
-            <img src="/images/send-message.png" alt="Send" />
+            <TravelImage src="/images/send-message.png" alt="Send" />
           </button>
         </div>
       </div>

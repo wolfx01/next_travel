@@ -1,4 +1,5 @@
 "use client";
+import TravelImage from '@/components/TravelImage';
 import { useState } from 'react';
 import Link from 'next/link';
 
@@ -91,7 +92,7 @@ export default function PostCard({ post, currentUserId }: PostCardProps) {
     <div className="post-card">
       <div className="post-header">
         <Link href={`/profile/${post.userId}`}>
-            <img 
+            <TravelImage 
                 src={post.userAvatar || '/images/default_avatar.png'} 
                 alt={post.userName} 
                 className="post-avatar"
@@ -116,7 +117,7 @@ export default function PostCard({ post, currentUserId }: PostCardProps) {
 
       {post.mediaUrl && (
         <div className="post-media">
-            <img src={post.mediaUrl} alt="Post media" />
+            <TravelImage src={post.mediaUrl} alt="Post media" />
         </div>
       )}
 
@@ -145,7 +146,7 @@ export default function PostCard({ post, currentUserId }: PostCardProps) {
           <div className="comments-section" style={{ marginTop: '15px', paddingTop: '15px', borderTop: '1px solid #f0f0f0' }}>
               {comments.map((c: any, i: number) => (
                   <div key={i} style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
-                      <img src={c.userAvatar || '/images/default_avatar.png'} alt="user" style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
+                      <TravelImage src={c.userAvatar || '/images/default_avatar.png'} alt="user" style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
                       <div style={{ background: '#f5f6fa', padding: '8px 12px', borderRadius: '12px', flex: 1 }}>
                           <h5 style={{ margin: 0, fontSize: '0.85rem' }}>{c.userName}</h5>
                           <p style={{ margin: '2px 0 0 0', fontSize: '0.9rem', color: '#333' }}>{c.text}</p>

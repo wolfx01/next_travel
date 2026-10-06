@@ -1,3 +1,4 @@
+import { requireSession } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import User from '@/lib/models/User';
@@ -5,7 +6,11 @@ import mongoose from 'mongoose';
 
 export async function POST(request: Request) {
     try {
-        const { currentUserId, targetUserId } = await request.json();
+        const session = await requireSession();
+        if (session.error) return session.error;
+        const currentUserId = session.userId;
+
+        const { targetUserId } = await request.json();
 
         if (!currentUserId || !targetUserId) {
             return NextResponse.json({ error: "Missing user IDs" }, { status: 400 });

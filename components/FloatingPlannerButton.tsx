@@ -6,6 +6,7 @@ import '@/app/styles/planner.css';
 
 export default function FloatingPlannerButton() {
   const pathname = usePathname();
+  if (['/login', '/register', '/settings'].includes(pathname) || pathname.startsWith('/admin')) return null;
 
   // Hide on Chat page to prevent overlap with input area
   if (pathname === '/chat') return null;

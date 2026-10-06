@@ -1,12 +1,13 @@
+import { requireAdmin } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import User from '@/lib/models/User';
 
 export async function GET(req: Request) {
     try {
+        const session = await requireAdmin();
+        if (session.error) return session.error;
         await connectToDatabase();
-        // Ideally checking for admin session here via cookies/headers
-        // For now, trusting the frontend auth check + we can add a quick check if needed but simplicity first
         
         const users = await User.find({}, 'userName email isAdmin createdAt').sort({ _id: -1 });
         return NextResponse.json(users);
@@ -17,10 +18,12 @@ export async function GET(req: Request) {
 
 export async function DELETE(req: Request) {
     try {
+        const session = await requireAdmin();
+        if (session.error) return session.error;
         await connectToDatabase();
         const { searchParams } = new URL(req.url);
         const idToDelete = searchParams.get('id');
-        const adminId = searchParams.get('adminId'); // Passed for basic verification
+        const adminId = session.userId;
 
         if (!idToDelete || !adminId) {
             return NextResponse.json({ error: 'Missing ID' }, { status: 400 });

@@ -1,9 +1,9 @@
 "use client";
 
+import TravelImage from '@/components/TravelImage';
 import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Navbar from '@/components/Navbar';
 import '@/app/styles/planner.css';
 
 interface ItineraryItem {
@@ -111,7 +111,7 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
 
     return (
         <div style={{ background: '#f8f9fa', minHeight: '100vh' }}>
-            <Navbar />
+
             
             <div className="planner-container">
                 <Link href="/planner" style={{ color: '#7f8c8d', textDecoration: 'none', display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
@@ -120,7 +120,7 @@ export default function TripDetailsPage({ params }: { params: Promise<{ id: stri
 
                 {/* Trip Cover Header */}
                 <div className="itinerary-cover">
-                    <img src={trip.coverImage || 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2021&auto=format&fit=crop'} alt="Trip Cover" />
+                    <TravelImage src={trip.coverImage || 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2021&auto=format&fit=crop'} alt="Trip Cover" />
                     <div className="itinerary-title-section">
                         <h1 style={{ fontSize: '3rem', margin: 0 }}>{trip.title}</h1>
                         <p style={{ fontSize: '1.2rem', opacity: 0.9 }}>

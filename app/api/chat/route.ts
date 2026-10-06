@@ -1,3 +1,4 @@
+import { requireSession } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import Message from '@/lib/models/Message';
@@ -6,8 +7,11 @@ import mongoose from 'mongoose';
 
 export async function GET(request: Request) {
     try {
+        const session = await requireSession();
+        if (session.error) return session.error;
+
         const { searchParams } = new URL(request.url);
-        const currentUserId = searchParams.get('currentUserId');
+        const currentUserId = session.userId;
         const contactId = searchParams.get('contactId');
 
         if (!currentUserId) {
@@ -82,10 +86,14 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
     try {
-        const body = await request.json();
-        const { senderId, receiverId, content } = body;
+        const session = await requireSession();
+        if (session.error) return session.error;
 
-        if (!senderId || !receiverId || !content) {
+        const body = await request.json();
+        const { receiverId, content } = body;
+        const senderId = session.userId;
+
+        if (!senderId || typeof receiverId !== "string" || !/^[a-f\d]{24}$/i.test(receiverId) || typeof content !== "string" || !content.trim() || content.length > 10000) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }
 

@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import Post from '@/lib/models/Post';
@@ -7,6 +8,8 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
     try {
+        const session = await requireAdmin();
+        if (session.error) return session.error;
         await connectToDatabase();
         
         // Use aggregation to unwind comments and project them into a flat structure
@@ -35,11 +38,13 @@ export async function GET(req: Request) {
 
 export async function DELETE(req: Request) {
     try {
+        const session = await requireAdmin();
+        if (session.error) return session.error;
         await connectToDatabase();
         const { searchParams } = new URL(req.url);
         const postId = searchParams.get('postId');
         const commentId = searchParams.get('commentId');
-        const adminId = searchParams.get('adminId');
+        const adminId = session.userId;
 
         if (!postId || !commentId || !adminId) {
             return NextResponse.json({ error: 'Missing Required IDs' }, { status: 400 });

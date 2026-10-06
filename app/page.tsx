@@ -1,5 +1,6 @@
 "use client";
 
+import TravelImage from '@/components/TravelImage';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import CreatePost from '@/components/Social/CreatePost';
@@ -48,12 +49,7 @@ export default function Home() {
       
       let data = await response.json();
       let countries = data.countries || []; // Handle paginated response
-      countries.forEach((country: any) => {
-          if (!country.rating) {
-              country.rating = (Math.random() * 2 + 3).toFixed(1);
-          }
-      });
-      const top = countries.sort((a: any, b: any) => parseFloat(b.rating) - parseFloat(a.rating)).slice(0, 6);
+      const top = countries.sort((a: any, b: any) => (Number(b.rating) || 0) - (Number(a.rating) || 0)).slice(0, 6);
       setTopDestinations(top);
     } catch (error) {
       console.error(error);
@@ -119,17 +115,22 @@ export default function Home() {
         <video className="vid" autoPlay loop muted playsInline src="/video/1851190-uhd_3840_2160_25fps.mp4"></video>
         <div className="hero-overlay"></div>
         <div className="home-hero-text">
+            <span className="hero-eyebrow">A little curiosity. A world of possibility.</span>
             <h1 className="hero-title-main">Travel Beyond Borders</h1>
             <p className="hero-subtitle-main">Live beyond limits. Discover the most breathtaking destinations and share your journey with the world.</p>
+            <div className="hero-actions">
             <Link href="/places" className="hero-cta-btn">
-                Start Your Journey
+                Explore destinations <span aria-hidden="true">↗</span>
             </Link>
+            <Link href="/planner" className="hero-secondary-link">Plan your next trip →</Link>
+            </div>
+            <p className="hero-note">Discover new places · Make a plan · Share your story</p>
         </div>
       </section>
 
       <h1 className="top">
         <svg xmlns="http://www.w3.org/2000/svg" width="40px" viewBox="0 0 640 640"><path d="M256.5 37.6C265.8 29.8 279.5 30.1 288.4 38.5C300.7 50.1 311.7 62.9 322.3 75.9C335.8 92.4 352 114.2 367.6 140.1C372.8 133.3 377.6 127.3 381.8 122.2C382.9 120.9 384 119.5 385.1 118.1C393 108.3 402.8 96 415.9 96C429.3 96 438.7 107.9 446.7 118.1C448 119.8 449.3 121.4 450.6 122.9C460.9 135.3 474.6 153.2 488.3 175.3C515.5 219.2 543.9 281.7 543.9 351.9C543.9 475.6 443.6 575.9 319.9 575.9C196.2 575.9 96 475.7 96 352C96 260.9 137.1 182 176.5 127C196.4 99.3 216.2 77.1 231.1 61.9C239.3 53.5 247.6 45.2 256.6 37.7zM321.7 480C347 480 369.4 473 390.5 459C432.6 429.6 443.9 370.8 418.6 324.6C414.1 315.6 402.6 315 396.1 322.6L370.9 351.9C364.3 359.5 352.4 359.3 346.2 351.4C328.9 329.3 297.1 289 280.9 268.4C275.5 261.5 265.7 260.4 259.4 266.5C241.1 284.3 207.9 323.3 207.9 370.8C207.9 439.4 258.5 480 321.6 480z"/></svg> 
-        Top Destination : 
+        Discover your next destination
       </h1>
       
       <div className="places-grid" id="top-destinations-grid">
@@ -154,7 +155,7 @@ export default function Home() {
 
       <h1 className="top">
         <svg xmlns="http://www.w3.org/2000/svg" width="40px" viewBox="0 0 640 640"><path d="M256.5 37.6C265.8 29.8 279.5 30.1 288.4 38.5C300.7 50.1 311.7 62.9 322.3 75.9C335.8 92.4 352 114.2 367.6 140.1C372.8 133.3 377.6 127.3 381.8 122.2C382.9 120.9 384 119.5 385.1 118.1C393 108.3 402.8 96 415.9 96C429.3 96 438.7 107.9 446.7 118.1C448 119.8 449.3 121.4 450.6 122.9C460.9 135.3 474.6 153.2 488.3 175.3C515.5 219.2 543.9 281.7 543.9 351.9C543.9 475.6 443.6 575.9 319.9 575.9C196.2 575.9 96 475.7 96 352C96 260.9 137.1 182 176.5 127C196.4 99.3 216.2 77.1 231.1 61.9C239.3 53.5 247.6 45.2 256.6 37.7zM321.7 480C347 480 369.4 473 390.5 459C432.6 429.6 443.9 370.8 418.6 324.6C414.1 315.6 402.6 315 396.1 322.6L370.9 351.9C364.3 359.5 352.4 359.3 346.2 351.4C328.9 329.3 297.1 289 280.9 268.4C275.5 261.5 265.7 260.4 259.4 266.5C241.1 284.3 207.9 323.3 207.9 370.8C207.9 439.4 258.5 480 321.6 480z"/></svg> 
-        Top Places : 
+        Places worth the journey
       </h1>
 
       <div className="places-grid" id="top-places-grid">
@@ -178,7 +179,7 @@ export default function Home() {
       <div className="container" style={{ marginTop: '60px' }}>
         <h1 className="top">
             <svg xmlns="http://www.w3.org/2000/svg" width="40px" viewBox="0 0 512 512"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
-            Travel Feed :
+            Stories from the road
         </h1>
         <div style={{ maxWidth: '600px', margin: '0 auto' }}>
             <div className="home-feed-stream">
@@ -247,7 +248,7 @@ function CountryCard({ country }: { country: any }) {
     return (
         <div className="country-card fade-in">
             <div className="country-image-container">
-                <img src={image} alt={country.name.common} className="country-image" loading="lazy" />
+                <TravelImage src={image} alt={country.name.common} className="country-image" loading="lazy" />
             </div>
             <div className="country-info">
                 <h3 className="country-name">{country.name.common}</h3>
@@ -264,7 +265,7 @@ function CountryCard({ country }: { country: any }) {
                 </div>
                 <div className="country-rating" style={{ marginTop: '10px', color: '#f1c40f' }}>
                     <span className="stars">★</span>
-                    <span className="rating-text">({country.rating}/5)</span>
+                    <span className="rating-text">{country.rating ? `(${country.rating}/5)` : "No ratings yet"}</span>
                 </div>
                 <p className="country-description">Discover the beauty and culture of {country.name.common}.</p>
                 <Link href={`/places?country=${encodeURIComponent(country.name.common)}`} className="explore-btn" style={{ textDecoration: 'none', textAlign: 'center', display: 'block' }}>
@@ -306,7 +307,7 @@ function PlaceCard({ place }: { place: any }) {
 
     return (
         <div className="place-card fade-in">
-            <img 
+            <TravelImage 
                 src={image} 
                 alt={place.name} 
                 className="place-image" 
@@ -321,7 +322,7 @@ function PlaceCard({ place }: { place: any }) {
                 </div>
                 <div className="place-rating">
                     <span className="stars">★</span>
-                    <span className="rating-text">({place.rating}/5)</span>
+                    <span className="rating-text">{place.rating ? `(${place.rating}/5)` : "No ratings yet"}</span>
                 </div>
                 <Link href={`/places/${place.id}`} className="view-details-btn">View Details</Link>
             </div>

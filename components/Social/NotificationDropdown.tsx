@@ -1,5 +1,6 @@
 "use client";
 
+import TravelImage from '@/components/TravelImage';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import '@/app/styles/notifications.css';
@@ -84,7 +85,7 @@ export default function NotificationDropdown({ userId }: { userId: string }) {
                                     className={`notification-item ${!notif.read ? 'unread' : ''}`}
                                     onClick={() => setIsOpen(false)}
                                 >
-                                    <img src={notif.senderId.avatarUrl || '/images/default_avatar.png'} alt="avatar" />
+                                    <TravelImage src={notif.senderId.avatarUrl || '/images/default_avatar.png'} alt="avatar" />
                                     <div className="notif-content">
                                         <p>
                                             <strong>{notif.senderId.userName}</strong>

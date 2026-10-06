@@ -1,3 +1,4 @@
+import { requireSession } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import Post from '@/lib/models/Post';
@@ -5,10 +6,14 @@ import User from '@/lib/models/User';
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { postId, userId, text } = body;
+        const session = await requireSession();
+        if (session.error) return session.error;
+        const userId = session.userId;
 
-    if (!postId || !userId || !text) {
+    const body = await request.json();
+    const { postId, text } = body;
+
+    if (!postId || !userId || typeof text !== "string" || !text.trim() || text.length > 5000) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 

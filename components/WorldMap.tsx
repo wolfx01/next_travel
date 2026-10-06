@@ -1,5 +1,6 @@
 "use client";
 
+import TravelImage from '@/components/TravelImage';
 import { useEffect, useState, useRef } from 'react';
 import Globe, { GlobeMethods } from 'react-globe.gl';
 import Link from 'next/link';
@@ -187,7 +188,7 @@ export default function WorldMap() {
                animation: 'fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
            }}>
                <div style={{ position: 'relative', height: '180px', marginBottom: '16px', overflow: 'hidden', borderRadius: '14px' }}>
-                   <img src={hoveredPlace.image} alt={hoveredPlace.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                   <TravelImage src={hoveredPlace.image} alt={hoveredPlace.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                    <div style={{ 
                        position: 'absolute', 
                        top: '12px', 

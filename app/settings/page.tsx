@@ -1,5 +1,6 @@
 "use client";
 
+import TravelImage from '@/components/TravelImage';
 import { useState, useEffect } from 'react';
 import '@/app/styles/settings.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -38,7 +39,7 @@ export default function SettingsPage() {
                             setFormData({
                                 name: fullUser.userName || '',
                                 bio: fullUser.bio || '',
-                                email: fullUser.email || '',
+                                email: data.email || '',
                                 avatarUrl: fullUser.avatarUrl || ''
                             });
                             setLoading(false);
@@ -231,7 +232,7 @@ export default function SettingsPage() {
                         <h2>Edit Profile</h2>
                         <form onSubmit={handleSaveProfile}>
                             <div className="avatar-upload">
-                                <img src={user?.avatarUrl || '/images/default_avatar.png'} alt="Avatar" className="current-avatar" />
+                                <TravelImage src={user?.avatarUrl || '/images/default_avatar.png'} alt="Avatar" className="current-avatar" />
                                 <div className="upload-btn-wrapper">
                                     <button className="btn-upload">Change Photo</button>
                                     <input type="file" name="myfile" onChange={handleFileChange} />

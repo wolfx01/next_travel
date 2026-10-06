@@ -48,13 +48,13 @@ export default function FeedPage() {
   };
 
   return (
-    <div style={{ maxWidth: '600px', margin: '40px auto', padding: '0 20px' }}>
-      <h1 style={{ marginBottom: '30px', fontSize: '2rem', fontWeight: 800, color: '#333' }}>Travel Feed</h1>
+    <main className="feed-page">
+      <h1>Stories from the road</h1>
       
       {user ? (
         <CreatePost user={user} onPostCreated={handlePostCreated} />
       ) : (
-        <div style={{ padding: '20px', background: '#ffebee', borderRadius: '8px', marginBottom: '20px', color: '#c62828' }}>
+        <div className="feed-login-note">
             Please <a href="/login" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>login</a> to share your travel stories.
         </div>
       )}
@@ -68,6 +68,6 @@ export default function FeedPage() {
             ))
         )}
       </div>
-    </div>
+    </main>
   );
 }

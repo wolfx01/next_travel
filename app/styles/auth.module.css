@@ -127,3 +127,30 @@
         border-radius: 12px 12px 0 0;
     }
 }
+
+/* Shared account identity with responsive, content-sized forms. */
+.authContainer { background: radial-gradient(ellipse at top left, #dcebdc, transparent 60%), #f7f8f4; padding: 120px 24px 60px; }
+.authForm { width: min(900px, 100%); height: auto; min-height: 540px; border: 1px solid #dce6da; border-radius: 22px; box-shadow: 0 20px 70px #183d3610; }
+.kool { background: linear-gradient(145deg, #133e31, #346b4b); padding: 40px 28px; min-height: 540px; height: auto; border-radius: 0; }
+.kool h1 { font-size: 34px; letter-spacing: -.04em; line-height: 1.2; }
+.kool p { color: #dcebdc; line-height: 1.8; }
+.kool button { border-radius: 10px; border: 1px solid #ffffff70; padding: 12px 24px; }
+.singup { padding: 40px 24px; height: auto; border-radius: 0; }
+.singup h1 { color: #183d36; font-size: 30px; font-weight: 600; letter-spacing: -.04em; }
+.singup input:not([type="submit"]) { width: 100%; background: #f7faf4; border-color: #dce6da; height: 48px; }
+.singup input:focus-visible { outline: 3px solid #a8ceb5; outline-offset: 2px; }
+.dbutton { width: 100%; }
+.submitBtn { background: #176c57; border-radius: 10px; width: 100%; min-height: 48px; box-shadow: none; }
+.submitBtn:hover { background: #104e3e; }
+@media (max-width: 700px) {
+  .authContainer { padding: 100px 20px 40px; }
+  .authForm { flex-direction: column; height: auto; }
+  .kool { width: 100%; min-height: 0; padding: 30px 24px; }
+  .singup { width: 100%; height: auto; padding: 30px 24px; }
+  .kool h1 { font-size: 26px; }
+}
+.kool h1 { color: #f2f8ee; }
+@media (min-width: 701px) and (max-width: 768px) {
+  .authForm { flex-direction: column; }
+  .kool { min-height: 0; padding: 30px; }
+}

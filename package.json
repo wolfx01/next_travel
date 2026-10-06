@@ -6,7 +6,9 @@
     "dev": "next dev --webpack",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test:security": "node --test scripts/security.test.cjs"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.1.0",

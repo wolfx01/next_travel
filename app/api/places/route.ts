@@ -169,18 +169,12 @@ export async function GET(request: Request) {
           countryDisplay = regionNames.of(city.country) || city.country;
       } catch (e) {}
 
-      function getStableRating(name: string) {
-          let hash = 0;
-          for (let i = 0; i < name.length; i++) { hash = name.charCodeAt(i) + ((hash << 5) - hash); }
-          return ((Math.abs(hash) % 20) / 10 + 3).toFixed(1); 
-      }
-
       return {
         id: city.id,
         name: city.name,
         country: countryDisplay, // Send Full Name to Frontend
         population: city.population,
-        rating: dbInfo && dbInfo.averageRating ? dbInfo.averageRating : (curated ? curated.rating : getStableRating(city.name)),
+        rating: dbInfo && dbInfo.averageRating ? dbInfo.averageRating : (curated ? curated.rating : null),
         reviewCount: dbInfo ? dbInfo.reviewCount : 0,
         image: curated?.image || 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400',
         description: curated

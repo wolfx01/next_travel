@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 require('dotenv').config({ path: '.env.local' });
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGO_URI;
 
 if (!MONGODB_URI) {
-  console.error('Please define the MONGODB_URI environment variable inside .env.local');
+  console.error('Please define the MONGO_URI environment variable inside .env.local');
   process.exit(1);
 }
 

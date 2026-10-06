@@ -1,5 +1,6 @@
 "use client";
 
+import TravelImage from '@/components/TravelImage';
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
@@ -178,7 +179,7 @@ export default function PlaceDetails() {
     return (
     <main className="place-details-container">
         <section className="hero-place">
-            <img src={mainImage} alt={place.name} className="hero-image" />
+            <TravelImage src={mainImage} alt={place.name} className="hero-image" />
             <div className="hero-text">
                 <h1>{place.name}, {place.countryName}</h1>
                 <p><i className="fas fa-map-marker-alt"></i> {place.city || place.name}, {place.countryName}</p>
@@ -235,10 +236,10 @@ export default function PlaceDetails() {
                     {galleryImages.length > 0 ? (
                         <>
                             {galleryImages.map((img, i) => (
-                                <img key={`g1-${i}`} src={img} alt={`${place.name} ${i+1}`} loading="lazy" />
+                                <TravelImage key={`g1-${i}`} src={img} alt={`${place.name} ${i+1}`} loading="lazy" />
                             ))}
                             {galleryImages.map((img, i) => (
-                                <img key={`g2-${i}`} src={img} alt={`${place.name} ${i+1} duplicate`} loading="lazy" aria-hidden="true" />
+                                <TravelImage key={`g2-${i}`} src={img} alt={`${place.name} ${i+1} duplicate`} loading="lazy" aria-hidden="true" />
                             ))}
                         </>
                     ) : (

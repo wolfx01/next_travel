@@ -1,24 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import Trip from '@/lib/models/Trip';
-import { cookies } from 'next/headers';
-import jwt from 'jsonwebtoken';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'; // Fallback just in case
-
-async function getUserIdFromToken() {
-    const cookieStore = await cookies();
-    const token = cookieStore.get('authToken'); // Changed from 'token' to 'authToken'
-
-    if (!token) return null;
-
-    try {
-        const decoded: any = jwt.verify(token.value, JWT_SECRET);
-        return decoded.id; // Changed from 'userId' to 'id' matched check-login
-    } catch (error) {
-        return null;
-    }
-}
+import { getSessionUserId as getUserIdFromToken } from '@/lib/auth';
 
 export async function GET(request: Request) {
     try {

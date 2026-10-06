@@ -1,5 +1,6 @@
 "use client";
 
+import TravelImage from '@/components/TravelImage';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import '@/app/styles/people.css';
@@ -100,7 +101,7 @@ export default function PeoplePage() {
                 className="user-card-header" 
                 style={{ backgroundImage: `url('${user.coverUrl || '/images/default_cover.png'}')` }}
             >
-                <img src={user.avatarUrl || '/images/default_avatar.png'} alt={user.userName} className="user-card-avatar" />
+                <TravelImage src={user.avatarUrl || '/images/default_avatar.png'} alt={user.userName} className="user-card-avatar" />
             </div>
             <div className="user-card-body">
                 <h3>{user.userName}</h3>

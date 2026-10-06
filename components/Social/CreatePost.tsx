@@ -1,5 +1,6 @@
 "use client";
 
+import TravelImage from '@/components/TravelImage';
 import { useState, useRef } from 'react';
 
 interface CreatePostProps {
@@ -70,7 +71,7 @@ export default function CreatePost({ onPostCreated, user }: CreatePostProps) {
   return (
     <div className="create-post-card">
       <div className="create-post-header">
-        <img 
+        <TravelImage 
             src={user.avatarUrl || '/images/default_avatar.png'} 
             alt="User" 
             className="create-post-avatar"
@@ -85,7 +86,7 @@ export default function CreatePost({ onPostCreated, user }: CreatePostProps) {
           
           {imagePreview && (
             <div className="preview-container">
-                <img src={imagePreview} alt="Preview" style={{ maxWidth: '100%', borderRadius: '8px', maxHeight: '200px' }} />
+                <TravelImage src={imagePreview} alt="Preview" style={{ maxWidth: '100%', borderRadius: '8px', maxHeight: '200px' }} />
                 <button 
                     type="button" 
                     onClick={() => setImagePreview(null)}

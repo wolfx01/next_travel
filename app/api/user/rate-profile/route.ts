@@ -1,3 +1,4 @@
+import { requireSession } from '@/lib/auth';
 
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
@@ -5,7 +6,13 @@ import User from '@/lib/models/User';
 
 export async function POST(request: Request) {
   try {
-    const { targetUserId, raterId, rating } = await request.json();
+        const session = await requireSession();
+        if (session.error) return session.error;
+        const raterId = session.userId;
+
+    const { targetUserId, rating } = await request.json();
+
+    if (typeof rating !== "number" || !Number.isInteger(rating) || rating < 1 || rating > 5) return NextResponse.json({ error: "Invalid rating" }, { status: 400 });
 
     if (!targetUserId || !raterId || !rating) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });

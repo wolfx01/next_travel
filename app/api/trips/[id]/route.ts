@@ -1,24 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import Trip from '@/lib/models/Trip';
-import { cookies } from 'next/headers';
-import jwt from 'jsonwebtoken';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
-
-async function getUserIdFromToken() {
-    const cookieStore = await cookies();
-    const token = cookieStore.get('authToken'); // Fixed cookie name
-
-    if (!token) return null;
-
-    try {
-        const decoded: any = jwt.verify(token.value, JWT_SECRET);
-        return decoded.id; // Fixed decoded field
-    } catch (error) {
-        return null;
-    }
-}
+import { getSessionUserId as getUserIdFromToken } from '@/lib/auth';
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
@@ -47,12 +30,14 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
         const { id } = await params;
         const body = await request.json();
+        const allowed = ["title", "startDate", "endDate", "coverImage", "budget", "itinerary"];
+        const update = Object.fromEntries(Object.entries(body).filter(([key]) => allowed.includes(key)));
         
         await connectToDatabase();
         const updatedTrip = await Trip.findOneAndUpdate(
             { _id: id, userId },
-            { $set: body },
-            { new: true }
+            { $set: update },
+            { new: true, runValidators: true }
         );
 
         if (!updatedTrip) {

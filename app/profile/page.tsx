@@ -1,5 +1,6 @@
 "use client";
 
+import TravelImage from '@/components/TravelImage';
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import '../styles/profile.css';
@@ -227,7 +228,7 @@ export default function ProfilePage() {
           <div className="profile-header-card">
               <div className="avatar-wrapper">
                   <div className="profile-avatar-large">
-                      <img src={avatarImage} alt="Profile" className="avatar-img" />
+                      <TravelImage src={avatarImage} alt="Profile" className="avatar-img" />
                   </div>
                   <button className="edit-avatar-btn" onClick={handleAvatarClick} aria-label="Edit Profile Picture">
                       <i className="fas fa-camera"></i>

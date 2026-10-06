@@ -1,36 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Travel
 
-## Getting Started
+Next.js travel app with destination discovery, maps, trip planning, social posts,
+private messaging, and an OpenRouter assistant. MongoDB stores account and social data.
 
-First, run the development server:
+## Setup
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Install Node.js, run `npm ci`, create `.env.local`, then run `npm run dev`.
+Open http://localhost:3000.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Required account environment variables:
+- `MONGO_URI`: MongoDB connection URI.
+- `JWT_SECRET`: long random signing secret.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Chatbot variables:
+- `OPENROUTER_API_KEY`: server-side OpenRouter API key.
+- `OPENROUTER_MODEL`: optional model identifier, default `openrouter/auto`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Optional destination/image integration variables: `GEMINI_API_KEY`,
+`UNSPLASH_ACCESS_KEY`, `PEXELS_API_KEY`, and `PIXABAY_API_KEY`.
+Keep secrets in `.env.local`, which Git ignores.
+Admin access requires `isAdmin: true` on the authenticated database user.
 
-## Learn More
+## Validation
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Run `npm run typecheck`, `npm run test:security`, and `npm run build`.
+Run `npm start` after building. Production cookies require HTTPS and expire
+in seven days. Database diagnostic routes return 404.

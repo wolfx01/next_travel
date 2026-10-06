@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import '@/app/styles/planner.css';
-import Navbar from '@/components/Navbar';
 
 interface Trip {
     _id: string;
@@ -90,7 +89,7 @@ export default function PlannerPage() {
 
     return (
         <div style={{ background: '#f8f9fa', minHeight: '100vh' }}>
-            <Navbar />
+
             
             <div className="planner-container">
                 <div className="planner-header">

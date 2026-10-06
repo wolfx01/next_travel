@@ -26,12 +26,6 @@ export async function GET(request: NextRequest) {
   const endIndex = startIndex + limit;
   const paginatedCountries = sortedCountries.slice(startIndex, endIndex);
 
-  // Assign random ratings if missing
-  paginatedCountries.forEach((country: any) => {
-      if (!country.rating) {
-          country.rating = (Math.random() * 2 + 3).toFixed(1);
-      }
-  });
 
   return NextResponse.json({
     countries: paginatedCountries,

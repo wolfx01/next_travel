@@ -1,3 +1,4 @@
+import { requireSession } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import Post from '@/lib/models/Post';
@@ -8,7 +9,8 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get('userId');
-    const limit = parseInt(searchParams.get('limit') || '50');
+    const requestedLimit = Number(searchParams.get('limit') || 50);
+    const limit = Number.isInteger(requestedLimit) ? Math.max(1, Math.min(100, requestedLimit)) : 50;
 
     await connectToDatabase();
     
@@ -28,16 +30,15 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    // 1. Verify User
-    // For now, we'll assume the client sends userId/userName securely or we decode token here.
-    // In previous steps we saw /api/auth/check-login implies cookies.
-    // Let's rely on payload validation first, but better to check session.
-    
-    // Quick session check logic (mimicking check-login existing logic if I could see it, but I'll assume simple input for now)
-    const body = await request.json();
-    const { userId, content, mediaUrl, location } = body;
+        const session = await requireSession();
+        if (session.error) return session.error;
+        const userId = session.userId;
 
-    if (!userId || !content) {
+    // 1. Verify User
+    const body = await request.json();
+    const { content, mediaUrl, location } = body;
+
+    if (!userId || typeof content !== "string" || !content.trim() || content.length > 10000) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 

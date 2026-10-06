@@ -1,3 +1,4 @@
+import { requireSession } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import Notification from '@/lib/models/Notification';
@@ -5,8 +6,11 @@ import User from '@/lib/models/User'; // Populate sender info
 
 export async function GET(request: Request) {
     try {
+        const session = await requireSession();
+        if (session.error) return session.error;
+
         const { searchParams } = new URL(request.url);
-        const userId = searchParams.get('userId');
+        const userId = session.userId;
 
         if (!userId) {
             return NextResponse.json({ error: "Missing userId" }, { status: 400 });
@@ -33,13 +37,16 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
     try {
+        const session = await requireSession();
+        if (session.error) return session.error;
+
         const { notificationIds } = await request.json(); // Array of IDs to mark as read
 
         await connectToDatabase();
 
         if (notificationIds && notificationIds.length > 0) {
             await Notification.updateMany(
-                { _id: { $in: notificationIds } },
+                { _id: { $in: notificationIds }, recipientId: session.userId },
                 { $set: { read: true } }
             );
         }

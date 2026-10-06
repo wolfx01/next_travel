@@ -1,3 +1,4 @@
+import { requireSession } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import User from '@/lib/models/User';
@@ -28,7 +29,6 @@ export async function GET(
     return NextResponse.json({
         _id: user._id,
         userName: user.userName,
-        email: user.email,
         avatarUrl: user.avatarUrl,
         coverUrl: user.coverUrl,
         bio: user.bio,
@@ -56,12 +56,13 @@ export async function PUT(
     { params }: { params: Promise<{ id: string }> }
   ) {
     try {
+      const session = await requireSession();
+      if (session.error) return session.error;
       const requestBody = await request.json();
       const { userName, bio, email } = requestBody;
       const { id: userId } = await params;
-  
-      // Auth Check (Basic: Ensure user is logged in)
-      // In a real app, verify the token matches the userId being updated
+      if (userId !== session.userId) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      if (typeof userName !== "string" || userName.trim().length < 3 || typeof email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || (bio !== undefined && typeof bio !== "string") || (requestBody.avatarUrl !== undefined && typeof requestBody.avatarUrl !== "string")) return NextResponse.json({ error: "Invalid profile" }, { status: 400 });
       
       await connectToDatabase();
       

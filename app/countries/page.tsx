@@ -1,5 +1,6 @@
 "use client";
 
+import TravelImage from '@/components/TravelImage';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import '@/app/styles/hero.css';
@@ -67,7 +68,7 @@ export default function Countries() {
 
   return (
     <main className="countries-main" style={{ marginTop: '0', paddingTop: '0' }}> 
-      <div className="premium-hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop" }}>
+      <div className="premium-hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop')" }}>
         <div className="hero-overlay"></div>
         <div className="hero-content">
             <h1 className="hero-title">Explore the World</h1>
@@ -142,7 +143,7 @@ function CountryCard({ country }: { country: any }) {
     return (
         <div className="country-card fade-in">
             <div className="country-image-container">
-                <img src={image} alt={country.name.common} className="country-image" loading="lazy" />
+                <TravelImage src={image} alt={country.name.common} className="country-image" loading="lazy" />
             </div>
             <div className="country-info">
                 <h3 className="country-name">{country.name.common}</h3>
@@ -159,7 +160,7 @@ function CountryCard({ country }: { country: any }) {
                 </div>
                 <div className="country-rating" style={{ marginTop: '10px', color: '#f1c40f' }}>
                     <span className="stars">★</span>
-                    <span className="rating-text">({country.rating}/5)</span>
+                    <span className="rating-text">{country.rating ? `(${country.rating}/5)` : "No ratings yet"}</span>
                 </div>
                 <p className="country-description">Discover the beauty and culture of {country.name.common}.</p>
                 <Link href={`/places?country=${encodeURIComponent(country.name.common)}`} className="explore-btn" style={{ textDecoration: 'none', textAlign: 'center', display: 'block' }}>

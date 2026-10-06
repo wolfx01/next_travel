@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function MapPage() {
   return (
-    <main style={{ paddingTop: '80px' }}> {/* Adjust padding based on Navbar height */}
+    <main className="map-page"> {/* Adjust padding based on Navbar height */}
       <WorldMapClient />
     </main>
   );

@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db';
 import Post from '@/lib/models/Post';
@@ -8,6 +9,8 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
     try {
+        const session = await requireAdmin();
+        if (session.error) return session.error;
         await connectToDatabase();
         
         const posts = await Post.find({})
@@ -22,10 +25,12 @@ export async function GET(req: Request) {
 
 export async function DELETE(req: Request) {
     try {
+        const session = await requireAdmin();
+        if (session.error) return session.error;
         await connectToDatabase();
         const { searchParams } = new URL(req.url);
         const idToDelete = searchParams.get('id');
-        const adminId = searchParams.get('adminId');
+        const adminId = session.userId;
 
         if (!idToDelete || !adminId) {
             return NextResponse.json({ error: 'Missing ID' }, { status: 400 });

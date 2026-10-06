@@ -1,20 +1,7 @@
-const FALLBACK_IMAGES = [
-  'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400', 
-  'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400', 
-  'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400', 
-  'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=400', 
-  'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400', 
-  'https://images.unsplash.com/photo-1499856871940-a09627c6dcf6?w=400', 
-  'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=400', 
-  'https://images.unsplash.com/photo-1500835556837-99ac94a94552?w=400', 
-  'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=400', 
-  'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=400'
-];
-
 let rateLimitResetTime = 0;
 
 export function getRandomFallback() {
-  return FALLBACK_IMAGES[Math.floor(Math.random() * FALLBACK_IMAGES.length)];
+  return '/images/destination-placeholder.svg';
 }
 
 async function fetchFromUnsplash(query: string) {

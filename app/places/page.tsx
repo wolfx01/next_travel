@@ -1,5 +1,6 @@
 "use client";
 
+import TravelImage from '@/components/TravelImage';
 import { useState, useEffect, useRef, useCallback, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -256,7 +257,7 @@ function PlaceCard({ place, isSaved, onToggleSave }: { place: any, isSaved: bool
                 <i className={`${isSaved ? 'fas' : 'far'} fa-heart`}></i>
             </button>
 
-            <img 
+            <TravelImage 
                 src={image} 
                 alt={place.name} 
                 className="place-image" 
@@ -268,7 +269,7 @@ function PlaceCard({ place, isSaved, onToggleSave }: { place: any, isSaved: bool
                 <div className="place-location">{place.country}</div> 
                 <div className="place-rating">
                     <span className="stars">★</span>
-                    <span className="rating-text">({place.rating}/5)</span>
+                    <span className="rating-text">{place.rating ? `(${place.rating}/5)` : "No ratings yet"}</span>
                 </div>
                 <Link href={`/places/${place.id}`} className="view-details-btn">View Details</Link>
             </div>

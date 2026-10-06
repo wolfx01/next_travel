@@ -12,6 +12,8 @@ export default function Navbar() {
   const pathname = usePathname();
 
   useEffect(() => {
+    setIsOpen(false);
+    setIsProfileMenuOpen(false);
     checkLoginStatus();
   }, [pathname]);
 
@@ -42,19 +44,20 @@ export default function Navbar() {
   return (
     <header className={['/', '/countries', '/places', '/people'].includes(pathname) || pathname.startsWith('/places/') || pathname.startsWith('/profile/') ? 'home-nav' : ''}>
       <div id="divlogo">
-        <Link href="/">
-          <img src="/images/Travel.png" alt="Travel Logo" id="logo" style={{ cursor: 'pointer' }} />
+        <Link href="/" className="travel-wordmark" aria-label="Travel home">
+          <svg width="29" height="29" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="13" stroke="currentColor" strokeWidth="1.5"/><path d="m21 11-3 7-7 3 3-7 7-3Z" fill="currentColor"/></svg>
+          Travel
         </Link>
       </div>
       
       <div id="button" className={isOpen ? 'active' : ''}>
         {/* Close Button for Sidebar */}
-        <div className="close-btn" onClick={() => setIsOpen(false)}>
+        <button type="button" aria-label="Close navigation" className="close-btn" onClick={() => setIsOpen(false)}>
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
-        </div>
+        </button>
 
         <Link href="/" className={`a ${pathname === '/' ? 'active' : ''}`}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '10px'}}>
@@ -198,11 +201,11 @@ export default function Navbar() {
             </div>
         )}
 
-        <div className={`hamburger ${isOpen ? 'active' : ''}`} onClick={() => setIsOpen(!isOpen)}>
+        <button type="button" aria-label="Open navigation" aria-expanded={isOpen} aria-controls="button" className={`hamburger ${isOpen ? 'active' : ''}`} onClick={() => setIsOpen(!isOpen)}>
             <svg width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-        </div>
+        </button>
       </div>
     </header>
   );

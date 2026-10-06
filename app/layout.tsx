@@ -18,6 +18,7 @@ import "./styles/Navbar.css";
 import "./styles/details.css";
 import "./styles/profile.css";
 import "./styles/social.css";
+import "./styles/design.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,8 +39,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 };
 
 export default function RootLayout({

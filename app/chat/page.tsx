@@ -1,5 +1,6 @@
 "use client";
 
+import TravelImage from '@/components/TravelImage';
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation'; // To start chat from profile
 import '@/app/styles/chat.css';
@@ -162,7 +163,7 @@ function ChatContent() {
                             onClick={() => setActiveChat(conv.user)}
                         >
                             <div className="chat-avatar-wrapper">
-                                <img src={conv.user.avatarUrl || '/images/default_avatar.png'} alt="avatar" className="chat-avatar" />
+                                <TravelImage src={conv.user.avatarUrl || '/images/default_avatar.png'} alt="avatar" className="chat-avatar" />
                             </div>
                             <div className="conversation-info">
                                 <div className="conversation-name">{conv.user.userName}</div>
@@ -192,7 +193,7 @@ function ChatContent() {
                             >
                                 <i className="fas fa-arrow-left"></i>
                             </button>
-                            <img 
+                            <TravelImage 
                                 src={activeChat.avatarUrl || '/images/default_avatar.png'} 
                                 style={{ width: '40px', height: '40px', borderRadius: '50%', marginRight: '15px' }} 
                             />

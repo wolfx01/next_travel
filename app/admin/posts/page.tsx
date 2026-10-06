@@ -1,5 +1,6 @@
 "use client";
 
+import TravelImage from '@/components/TravelImage';
 import { useState, useEffect } from 'react';
 import AdminLayout from '@/components/AdminLayout';
 import { useRouter } from 'next/navigation';
@@ -144,7 +145,7 @@ export default function AdminPostsPage() {
                 <div className="modal-overlay" onClick={() => setSelectedImage(null)}>
                     <div className="modal-content" onClick={e => e.stopPropagation()}>
                         <button className="close-modal-btn" onClick={() => setSelectedImage(null)}>&times;</button>
-                        <img src={selectedImage} alt="Post Media" />
+                        <TravelImage src={selectedImage} alt="Post Media" />
                     </div>
                 </div>
             )}
